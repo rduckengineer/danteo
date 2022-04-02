@@ -10,6 +10,6 @@ This is a long text!
 It is even multiline!!!)"sv;
 
 SCENARIO("Plain text pages can describe their content") {
-    [[maybe_unused]] static constexpr danteo::PlainTextPage page{longText};
+    static constexpr danteo::PlainTextPage page{longText};
     STATIC_REQUIRE(page.content() == longText);
 }

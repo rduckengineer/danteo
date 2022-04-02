@@ -110,7 +110,8 @@ dynamic_project_options(
         # MSVC_WARNINGS    # Override the defaults for the MSVC warnings
         # CLANG_WARNINGS   # Override the defaults for the CLANG warnings
         # GCC_WARNINGS     # Override the defaults for the GCC warnings
-        # CPPCHECK_OPTIONS # Override the defaults for CppCheck
+        CPPCHECK_OPTIONS
+        -iftxui/* # We don't want to check FTXUI's code :)))
 )
 
 target_compile_features(project_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})

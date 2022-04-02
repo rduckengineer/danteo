@@ -18,8 +18,16 @@ add_test(NAME cli.version_matches COMMAND intro --version)
 set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
 
-add_executable(tests tests.cpp)
-target_link_libraries(tests PRIVATE project_warnings project_options catch_main)
+add_executable(tests
+        tests.cpp
+        user_interface/plain_text_page_test.cpp)
+
+target_link_libraries(tests
+        PRIVATE
+        project_warnings
+        project_options
+        catch_main
+        user_interface_impl)
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries
@@ -41,7 +49,11 @@ add_executable(constexpr_tests
         constexpr_tests.cpp
         user_interface/plain_text_page_constexpr_test.cpp
         )
-target_link_libraries(constexpr_tests PRIVATE project_options project_warnings catch_main user_interface_impl)
+target_link_libraries(constexpr_tests PRIVATE
+        project_options
+        project_warnings
+        catch_main
+        user_interface_core_impl)
 
 catch_discover_tests(
         constexpr_tests
@@ -59,7 +71,12 @@ catch_discover_tests(
 # Disable the constexpr portion of the test, and build again this allows us to have an executable that we can debug when
 # things go wrong with the constexpr testing
 add_executable(relaxed_constexpr_tests constexpr_tests.cpp)
-target_link_libraries(relaxed_constexpr_tests PRIVATE project_options project_warnings catch_main user_interface)
+target_link_libraries(relaxed_constexpr_tests
+        PRIVATE
+        project_options
+        project_warnings
+        catch_main
+        user_interface_core_impl)
 target_compile_definitions(relaxed_constexpr_tests PRIVATE -DCATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
 
 catch_discover_tests(
