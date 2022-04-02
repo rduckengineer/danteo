@@ -28,3 +28,4 @@ SpaceBeforeCaseColon: false
 SpaceBeforeRangeBasedForLoopColon: true
 BreakBeforeBraces: Attach
 AccessModifierOffset: -4
+AlwaysBreakTemplateDeclarations: Yes

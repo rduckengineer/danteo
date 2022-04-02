@@ -7,7 +7,7 @@ using namespace std::string_view_literals;
 
 SCENARIO("Plain text pages can be rendered on a Screen") {
     GIVEN("A PlainTextPage") {
-        [[maybe_unused]] danteo::PlainTextPage page{"Content"sv};
+        danteo::PlainTextPage page{"Content"sv};
 
         AND_GIVEN("A Screen") {
             using ftxui::Dimensions;
