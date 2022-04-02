@@ -2,7 +2,7 @@ name: ci
 on:
   pull_request:
   release:
-    types: [published]
+    types: [ published ]
   push:
     tags:
     branches:
@@ -50,6 +50,13 @@ jobs:
           # mingw is determined by this author to be too buggy to support
           - os: windows-2019
             compiler: gcc-11
+
+          # For some reason, FTXUI triggers ASAN only in this configuration
+          # Ideally we would only disable the specific checks for the specific tests,
+          # but that's more time than I can keep spending on this
+          - os: macos-10.15
+            compiler: llvm-13.0.0
+            developer_mode: ON
 
         include:
           # Add appropriate variables for gcov version required. This will intentionally break
