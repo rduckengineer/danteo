@@ -157,9 +157,16 @@ struct Color {
     std::uint8_t B{};
 };
 
+struct Width {
+    std::size_t   width;
+    [[nodiscard]] operator std::size_t() const { // NOLINT hicpp-explicit-conversions
+        return width;
+    }
+};
+
 // A simple way of representing a bitmap on screen using only characters
 struct Bitmap : ftxui::Node {
-    Bitmap(std::size_t width,
+    Bitmap(Width       width,
            std::size_t height) // NOLINT same typed parameters adjacent to each other
         : width_(width)
         , height_(height) {}
@@ -192,7 +199,7 @@ struct Bitmap : ftxui::Node {
 
     [[nodiscard]] auto& data() noexcept { return pixels; }
 
-  private:
+private:
     std::size_t width_;
     std::size_t height_;
 
@@ -202,8 +209,8 @@ struct Bitmap : ftxui::Node {
 void game_iteration_canvas() {
     // this should probably have a `bitmap` helper function that does what you expect
     // similar to the other parts of FTXUI
-    auto bm = std::make_shared<Bitmap>(50, 50);     // NOLINT magic numbers
-    auto small_bm = std::make_shared<Bitmap>(6, 6); // NOLINT magic numbers
+    auto bm = std::make_shared<Bitmap>(Width{50}, 50);     // NOLINT magic numbers
+    auto small_bm = std::make_shared<Bitmap>(Width{6}, 6); // NOLINT magic numbers
 
     double fps = 0;
 
