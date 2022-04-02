@@ -3,22 +3,24 @@ find_package(spdlog CONFIG)
 find_package(docopt CONFIG)
 
 # Generic test that uses conan libs
-add_executable(intro main.cpp)
+add_executable(danteo main.cpp)
 target_link_libraries(
-        intro
-        PRIVATE project_options
+        danteo
+        PRIVATE
+        project_options
         project_warnings
         docopt::docopt
         fmt::fmt
-        spdlog::spdlog)
+        user_interface_impl
+)
 
 target_link_system_libraries(
-        intro
+        danteo
         PRIVATE
         ftxui::screen
         ftxui::dom
         ftxui::component)
 
-target_include_directories(intro PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
+target_include_directories(danteo PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
 
 add_subdirectory(user_interface)

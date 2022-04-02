@@ -6,7 +6,7 @@ ColumnLimit: 100
 AlignConsecutiveDeclarations: Consecutive
 AlignOperands: Align
 BreakBeforeTernaryOperators: true
-NamespaceIndentation: Inner
+NamespaceIndentation: None
 FixNamespaceComments: true
 IndentPPDirectives: AfterHash
 IndentRequires: true

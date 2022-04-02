@@ -15,7 +15,8 @@ target_link_libraries(
 
 # Terminal-related display logic
 add_library(user_interface_impl STATIC
-        plain_text_page_presenter.cpp)
+        plain_text_page_presenter.cpp
+        title_page_presenter.cpp)
 
 target_link_libraries(
         user_interface_impl

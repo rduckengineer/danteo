@@ -151,7 +151,7 @@ set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT intro)
 
 # Add other targets that you want installed here, be default we just package the one executable
 # we know we want to ship
-package_project(TARGETS intro)
+package_project(TARGETS danteo)
 
 # Experience shows that explicit package naming can help make it easier to sort
 # out potential ABI related issues before they start, while helping you
