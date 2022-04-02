@@ -6,6 +6,7 @@
 namespace danteo {
 class PlainTextPage {
 public:
+    // cppcheck-suppress[passedByValue] string_view isn't expensive on desktop
     explicit constexpr PlainTextPage(std::string_view textContent) noexcept
         : content_{textContent} {}
 

@@ -10,7 +10,10 @@ SCENARIO("Plain text pages can be rendered on a Screen") {
         [[maybe_unused]] danteo::PlainTextPage page{"Content"sv};
 
         AND_GIVEN("A Screen") {
-            ftxui::Screen screen{10, 1}; // NOLINT magic numbers
+            using ftxui::Dimensions;
+
+            auto screen = ftxui::Screen::Create(
+                Dimensions{.dimx = 10, .dimy = 1}); // NOLINT numbers are named
 
             WHEN("Rendering to the screen") {
                 ftxui::Render(screen, danteo::present(page));
