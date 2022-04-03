@@ -1,6 +1,9 @@
 add_library(user_interface_core INTERFACE
         plain_text_page.hpp
-        title_page.hpp)
+        title_page.hpp
+        size_2d.hpp
+        color.hpp
+        )
 
 target_include_directories(user_interface_core INTERFACE ${DANTEO_INCLUDE_PATH})
 

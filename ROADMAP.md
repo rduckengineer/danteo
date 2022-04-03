@@ -4,13 +4,19 @@ graph
   classDef inprogress fill:#C81,color:#111;
 
   game([Game]) --> StateMachine
-  game --> PageSwitching
-  PageSwitching --> PagePresenter
-  PageSwitching --> StateMachine
-  PagePresenter --> PlainTextPage
   game --> RenderLoop
-  PagePresenter --> RenderLoop
+
+  RenderLoop --> PageSwitching
+
+  PageSwitching --> PresentElement
+  PageSwitching --> StateMachine
   
-  class , done;
-  class PlainTextPage inprogress;
+  PresentElement --> PlainTextPage
+  PresentElement --> TitlePage
+
+  TitlePage --> HSVColor
+  TitlePage --> Size2D
+
+  class , inprogress;
+  class PlainTextPage,TitlePage,PresentElement,HSVColor,Size2D done;
 ```

@@ -48,6 +48,8 @@ catch_discover_tests(
 set(DANTEO_CONSTEXPR_TEST_FILES
         user_interface/plain_text_page_constexpr_test.cpp
         user_interface/title_page_constexpr_test.cpp
+        user_interface/size_2d_constexpr_test.cpp
+        user_interface/color_constexpr_test.cpp
         )
 
 # Add a file containing a set of constexpr tests
