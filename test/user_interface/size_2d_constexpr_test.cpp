@@ -27,8 +27,3 @@ TEST_CASE("Width and Height cannot be mistaken for each other") {
         STATIC_REQUIRE(!ImplicitlyConstructible<Height, Width>);
     }
 }
-
-TEST_CASE("Width and Height can be compared to each other") {
-    STATIC_REQUIRE(std::three_way_comparable_with<Width, Height, std::strong_ordering>);
-    STATIC_REQUIRE(std::three_way_comparable_with<Height, Width, std::strong_ordering>);
-}
