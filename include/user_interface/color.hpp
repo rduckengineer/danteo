@@ -1,8 +1,6 @@
 #ifndef DANTEO_COLOR_HPP
 #define DANTEO_COLOR_HPP
 
-//#include <compare>
-
 #include <cstdint>
 
 namespace danteo {
