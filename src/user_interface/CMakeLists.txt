@@ -22,5 +22,6 @@ target_link_libraries(
         PUBLIC
         user_interface
         user_interface_core_impl
+        engine_interface
         ftxui::screen
 )

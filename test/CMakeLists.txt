@@ -7,6 +7,8 @@ add_library(catch_main OBJECT catch_main.cpp)
 target_link_libraries(catch_main PUBLIC Catch2::Catch2)
 target_link_libraries(catch_main PRIVATE project_options)
 
+add_subdirectory(engine)
+
 # Provide a simple smoke test to make sure that the CLI works and can display a --help message
 add_test(NAME cli.has_help COMMAND danteo --help)
 
@@ -34,16 +36,11 @@ target_link_libraries(tests
 # to whatever you want, or use different for different binaries
 catch_discover_tests(
         tests
-        TEST_PREFIX
-        "unittests."
-        REPORTER
-        xml
-        OUTPUT_DIR
-        .
-        OUTPUT_PREFIX
-        "unittests."
-        OUTPUT_SUFFIX
-        .xml)
+        TEST_PREFIX "unittests."
+        REPORTER xml
+        OUTPUT_DIR .
+        OUTPUT_PREFIX "unittests."
+        OUTPUT_SUFFIX .xml)
 
 set(DANTEO_CONSTEXPR_TEST_FILES
         user_interface/plain_text_page_constexpr_test.cpp
@@ -58,41 +55,13 @@ target_link_libraries(constexpr_tests PRIVATE
         project_options
         project_warnings
         catch_main
-        user_interface_core_impl)
+        user_interface_core_impl
+        engine_constexpr_tests)
 
 catch_discover_tests(
         constexpr_tests
-        TEST_PREFIX
-        "constexpr."
-        REPORTER
-        xml
-        OUTPUT_DIR
-        .
-        OUTPUT_PREFIX
-        "constexpr."
-        OUTPUT_SUFFIX
-        .xml)
-
-# Disable the constexpr portion of the test, and build again this allows us to have an executable that we can debug when
-# things go wrong with the constexpr testing
-add_executable(relaxed_constexpr_tests ${DANTEO_CONSTEXPR_TEST_FILES})
-target_link_libraries(relaxed_constexpr_tests
-        PRIVATE
-        project_options
-        project_warnings
-        catch_main
-        user_interface_core_impl)
-target_compile_definitions(relaxed_constexpr_tests PRIVATE -DCATCH_CONFIG_RUNTIME_STATIC_REQUIRE)
-
-catch_discover_tests(
-        relaxed_constexpr_tests
-        TEST_PREFIX
-        "relaxed_constexpr."
-        REPORTER
-        xml
-        OUTPUT_DIR
-        .
-        OUTPUT_PREFIX
-        "relaxed_constexpr."
-        OUTPUT_SUFFIX
-        .xml)
+        TEST_PREFIX "constexpr."
+        REPORTER xml
+        OUTPUT_DIR .
+        OUTPUT_PREFIX "constexpr."
+        OUTPUT_SUFFIX .xml)
