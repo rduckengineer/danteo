@@ -7,6 +7,8 @@ namespace danteo {
 class GameClock {
 public:
     using clock_type = std::chrono::steady_clock;
+    using duration   = clock_type::duration;
+    using time_point = clock_type::time_point;
 
     struct Elapsed {
         clock_type::duration const sinceLast;

@@ -1,13 +1,9 @@
 find_package(Catch2 REQUIRED)
+find_package(fmt REQUIRED)
 
 include(CTest)
 include(Catch)
 
-add_library(catch_main OBJECT catch_main.cpp)
-target_link_libraries(catch_main PUBLIC Catch2::Catch2)
-target_link_libraries(catch_main PRIVATE project_options)
-
-add_subdirectory(engine)
 
 # Provide a simple smoke test to make sure that the CLI works and can display a --help message
 add_test(NAME cli.has_help COMMAND danteo --help)
@@ -20,16 +16,25 @@ add_test(NAME cli.version_matches COMMAND danteo --version)
 set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${PROJECT_VERSION}")
 
 
+add_library(test_helpers INTERFACE
+        format_chrono.hpp)
+
+target_include_directories(test_helpers INTERFACE ".")
+
 add_executable(tests
-        user_interface/plain_text_page_test.cpp
+        catch_main.cpp
         )
 
+add_subdirectory(engine)
+add_subdirectory(user_interface)
+
 target_link_libraries(tests
-        PRIVATE
+        PUBLIC
+        Catch2::Catch2
         project_warnings
         project_options
-        catch_main
-        user_interface_impl)
+        user_interface_tests
+        engine_constexpr_tests)
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries
@@ -39,28 +44,4 @@ catch_discover_tests(
         REPORTER xml
         OUTPUT_DIR .
         OUTPUT_PREFIX "unittests."
-        OUTPUT_SUFFIX .xml)
-
-set(DANTEO_CONSTEXPR_TEST_FILES
-        user_interface/plain_text_page_constexpr_test.cpp
-        user_interface/title_page_constexpr_test.cpp
-        user_interface/size_2d_constexpr_test.cpp
-        user_interface/color_constexpr_test.cpp
-        )
-
-# Add a file containing a set of constexpr tests
-add_executable(constexpr_tests ${DANTEO_CONSTEXPR_TEST_FILES})
-target_link_libraries(constexpr_tests PRIVATE
-        project_options
-        project_warnings
-        catch_main
-        user_interface_core_impl
-        engine_constexpr_tests)
-
-catch_discover_tests(
-        constexpr_tests
-        TEST_PREFIX "constexpr."
-        REPORTER xml
-        OUTPUT_DIR .
-        OUTPUT_PREFIX "constexpr."
         OUTPUT_SUFFIX .xml)

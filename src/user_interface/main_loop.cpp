@@ -1,65 +1,13 @@
 #include "user_interface/main_loop.hpp"
 
-#include "engine/game_clock.hpp"
-
+#include "user_interface/game_presenter.hpp"
 #include "user_interface/title_page_presenter.hpp"
 
-#include <ftxui/component/component.hpp>
-#include <ftxui/component/screen_interactive.hpp>
-#include <utility>
+#include "engine/game_runner.hpp"
 
-#include <concepts>
+#include <ftxui/component/screen_interactive.hpp>
 
 namespace danteo {
-
-template <typename T>
-concept FTXScreen = requires(T screen) {
-    {screen.Post(ftxui::Task{})};
-    {screen.Loop(ftxui::Component{})};
-    {screen.RequestAnimationFrame()};
-};
-
-template <FTXScreen Screen>
-class GamePresenter {
-public:
-    explicit GamePresenter(Screen& screen)
-        : screen_{screen} {}
-
-    void setCurrentPage(ftxui::Component page) {
-        // This way the page is being swapped on the UI thread, and while the Screen is not trying
-        // to access the component, so this function should be thread-safe
-        screen_.Post(ftxui::Task{[this, heldPage = std::move(page)]() mutable {
-            topLevel->DetachAllChildren();
-            topLevel->Add(std::move(heldPage));
-            screen_.RequestAnimationFrame();
-        }});
-    }
-
-    void runUI() { screen_.Loop(topLevel); }
-
-private:
-    Screen&          screen_;
-    ftxui::Component topLevel = ftxui::Make<ftxui::ComponentBase>();
-};
-
-template <typename T>
-concept UpdateCallback = std::is_invocable_r_v<bool, T, GameClock::Elapsed>;
-
-class GameRunner {
-public:
-    constexpr explicit GameRunner(GameClock gameClock = GameClock{GameClock::clock_type ::now()})
-        : gameClock_{std::move(gameClock)} {}
-
-    void run(UpdateCallback auto update) {
-        while (true) {
-            if (!update(gameClock_.tick())) { break; }
-        }
-    }
-
-private:
-    GameClock gameClock_;
-};
-
 void mainLoop() {
     auto          screen = ftxui::ScreenInteractive::Fullscreen();
     GamePresenter renderer{screen};

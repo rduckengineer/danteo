@@ -8,6 +8,7 @@ add_library(user_interface_core INTERFACE
 target_include_directories(user_interface_core INTERFACE ${DANTEO_INCLUDE_PATH})
 
 add_library(user_interface_presenters INTERFACE
+        game_presenter.hpp
         plain_text_page_presenter.hpp
         title_page_presenter.hpp
         main_loop.hpp)
