@@ -22,7 +22,6 @@ set_tests_properties(cli.version_matches PROPERTIES PASS_REGULAR_EXPRESSION "${P
 
 add_executable(tests
         user_interface/plain_text_page_test.cpp
-        user_interface/next_component_test.cpp
         )
 
 target_link_libraries(tests

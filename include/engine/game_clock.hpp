@@ -19,7 +19,7 @@ public:
         : start_{start}
         , lastUpdate_{start} {}
 
-    [[nodiscard]] Elapsed updateAt(clock_type::time_point now) noexcept {
+    [[nodiscard]] Elapsed tick(clock_type::time_point now = clock_type::now()) noexcept {
         auto delta  = elapsedAt(now);
         lastUpdate_ = now;
         return delta;

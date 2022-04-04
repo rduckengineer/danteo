@@ -10,7 +10,6 @@ target_include_directories(user_interface_core INTERFACE ${DANTEO_INCLUDE_PATH})
 add_library(user_interface_presenters INTERFACE
         plain_text_page_presenter.hpp
         title_page_presenter.hpp
-        next_component.hpp
         main_loop.hpp)
 
 target_include_directories(user_interface_presenters INTERFACE ${DANTEO_INCLUDE_PATH})

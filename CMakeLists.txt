@@ -112,7 +112,7 @@ dynamic_project_options(
         # GCC_WARNINGS     # Override the defaults for the GCC warnings
         CPPCHECK_OPTIONS
         -iftxui/* # We don't want to check FTXUI's code :)))
-        ENABLE_COVERAGE ON
+        ENABLE_COVERAGE ${ENABLE_DEVELOPER_MODE}
 )
 
 target_compile_features(project_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})

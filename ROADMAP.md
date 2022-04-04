@@ -17,6 +17,6 @@ graph
   TitlePage --> HSVColor
   TitlePage --> Size2D
 
-  class , inprogress;
+  class PageSwitching, inprogress;
   class PlainTextPage,TitlePage,PresentElement,HSVColor,Size2D done;
 ```

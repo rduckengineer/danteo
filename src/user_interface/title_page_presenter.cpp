@@ -1,5 +1,7 @@
 #include "user_interface/title_page_presenter.hpp"
 
+#include "ftxui/component/component.hpp"
+
 namespace danteo {
 namespace {
 ftxui::Dimensions toFTX(Size2D const& box) {
@@ -23,5 +25,19 @@ ftxui::Element present(TitlePage const& titlePage) {
                  | boxSize(titlePage.box_size) | bgcolor(toFTX(titlePage.box_color)) | border;
 
     return center(std::move(mainBox)) | bgcolor(toFTX(titlePage.page_color));
+}
+
+ftxui::Component pageFromTitle(TitlePage const& titlePage, std::function<void()> onNext) {
+    auto onEnterPressed
+        = [&, onNext_ = std::move(onNext)](ftxui::Event event) { // NOLINT API forces copy
+              if (event == ftxui::Event::Return) {
+                  onNext_();
+                  return true;
+              }
+              return false;
+          };
+
+    return ftxui::Renderer([&titlePage] { return danteo::present(titlePage); })
+         | ftxui::CatchEvent(onEnterPressed);
 }
 } // namespace danteo
