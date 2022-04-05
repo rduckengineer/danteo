@@ -16,7 +16,7 @@ SCENARIO("The GamePresenter updates the current page when running the screen loo
         screen.mockLoop([&](ftxui::Component const& component) {
             CHECK(component->ChildCount() == 0);
             checkWasCalled = true;
-            screen.stopRunning();
+            presenter.stopRunning();
         });
 
         presenter.runUI();
@@ -54,7 +54,7 @@ SCENARIO("The GamePresenter updates the current page when running the screen loo
                 CHECK(animationWasRequested);
             }
 
-            screen.stopRunning();
+            presenter.stopRunning();
             uiThread.join();
         }
     }

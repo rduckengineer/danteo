@@ -22,8 +22,8 @@ SCENARIO("A page request specifies the content of a page") {
             = [](std::string_view expected) { // cppcheck-suppress[passedByValue]
                                               // string_view by copy
                   return danteo::Visitor{
-                      [=](TestTitlePage page) -> bool { return page.title == expected; },
-                      [=](TestExitPage page) -> bool { return page.farewell == expected; }};
+                      [=](TestTitlePage const& page) -> bool { return page.title == expected; },
+                      [=](TestExitPage const& page) -> bool { return page.farewell == expected; }};
               };
 
         AND_GIVEN("A request made from one type") {

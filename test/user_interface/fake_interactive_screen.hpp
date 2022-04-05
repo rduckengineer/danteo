@@ -28,6 +28,10 @@ struct FakeInteractiveScreen {
     }
     void RequestAnimationFrame() { requestAnimMock_(); }
 
+    auto ExitLoopClosure() {
+        return [this] { running = false; };
+    }
+
     void mockLoop(std::function<void(ftxui::Component)> loopMock) {
         loopMock_ = std::move(loopMock);
     }
@@ -35,8 +39,6 @@ struct FakeInteractiveScreen {
     void mockRequestAnimation(std::function<void()> requestAnimationMock) {
         requestAnimMock_ = std::move(requestAnimationMock);
     }
-
-    void stopRunning() { running = false; }
 
 private:
     std::atomic<bool>                            running = false;

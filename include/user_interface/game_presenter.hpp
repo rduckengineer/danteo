@@ -11,6 +11,7 @@ concept FTXScreen = requires(T screen) {
     {screen.Post(ftxui::Task{})};
     {screen.Loop(ftxui::Component{})};
     {screen.RequestAnimationFrame()};
+    {screen.ExitLoopClosure()} -> std::invocable;
 };
 
 template <FTXScreen Screen>
@@ -30,6 +31,8 @@ public:
     }
 
     void runUI() { screen_.Loop(topLevel); }
+
+    void stopRunning() { screen_.ExitLoopClosure()(); }
 
 private:
     Screen&          screen_;

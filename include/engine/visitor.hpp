@@ -4,17 +4,17 @@
 #include <utility>
 
 namespace danteo {
-template <typename... Base>
-struct Visitor : Base... {
-    template <typename... T>
-    constexpr Visitor(T&&... t) // cppcheck-suppress[noExplicitConstructor] makes no sense here
-        : Base{std::forward<T>(t)}... {}
+template <typename... Overload>
+struct Visitor : Overload... {
 
-    using Base::operator()...;
+    constexpr Visitor(Overload&&... overload) // NOLINT explicit makes no sense here
+        : Overload{std::forward<Overload>(overload)}... {}
+
+    using Overload::operator()...;
 };
 
 template <typename... Overload>
 Visitor(Overload...) -> Visitor<std::decay_t<Overload>...>;
-}
+} // namespace danteo
 
 #endif // DANTEO_VISITOR_HPP
