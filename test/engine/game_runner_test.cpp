@@ -31,12 +31,13 @@ SCENARIO("The GameRunner tries to maintain a stable update rate") {
     GIVEN("A test runner") {
         danteo::GameRunner runner{danteo::GameClock{currentTime}};
         WHEN("The update takes less than the step") {
-            static constexpr auto step       = 15ms;
-            static constexpr auto updateTime = 5ms;
+            static constexpr auto step              = 15ms;
+            static constexpr auto updateTime        = 5ms;
+            static constexpr auto expectedSleepTime = 10ms;
 
             THEN("Sleep so that the elapsed time is roughly the same as the step") {
                 runner.runOneIteration(
-                    updateLasts(updateTime), step, timeSource, checkSleepTimeIs(10ms));
+                    updateLasts(updateTime), step, timeSource, checkSleepTimeIs(expectedSleepTime));
 
                 AND_THEN("After the sleep the elapsed time since the last update is the processing "
                          "duration plus the actual sleep time") {

@@ -44,7 +44,9 @@ SCENARIO("The GamePresenter updates the current page when running the screen loo
                  "requested") {
                 auto startWait = std::chrono::steady_clock::now();
                 while (!hasSeenANewChild) {
-                    if (std::chrono::steady_clock::now() - startWait > 1s) { FAIL(); }
+                    if (std::chrono::steady_clock::now() - startWait > 1s) { // NOLINT magic number
+                        FAIL();
+                    }
                 }
                 CHECK(hasSeenANewChild);
                 CHECK(animationWasRequested);
