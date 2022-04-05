@@ -35,7 +35,7 @@ public:
         }
     }
 
-    bool runOneIteration(UpdateCallback auto update, GameClock::duration const step,
+    bool runOneIteration(UpdateCallback auto& update, GameClock::duration const step,
                          TimeSource auto timeSource, SleepFn auto sleepFunc) {
         auto frameStart = timeSource();
         if (!update(gameClock_.tick(frameStart))) { return false; }

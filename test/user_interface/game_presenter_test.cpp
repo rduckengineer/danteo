@@ -42,10 +42,12 @@ SCENARIO("The GamePresenter updates the current page when running the screen loo
 
             THEN("The page is correctly set on the UI thread and the animation refresh was "
                  "requested") {
+                static constexpr auto timeout = 1s;
+
                 auto startWait = std::chrono::steady_clock::now();
                 while (!hasSeenANewChild) {
-                    if (std::chrono::steady_clock::now() - startWait > 1s) { // NOLINT magic number
-                        FAIL();
+                    if (std::chrono::steady_clock::now() - startWait > timeout) {
+                        FAIL("Timeout expired: no child seen!");
                     }
                 }
                 CHECK(hasSeenANewChild);

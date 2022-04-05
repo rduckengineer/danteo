@@ -31,22 +31,24 @@ SCENARIO("The GameRunner tries to maintain a stable update rate") {
     GIVEN("A test runner") {
         danteo::GameRunner runner{danteo::GameClock{currentTime}};
         WHEN("The update takes less than the step") {
-            static constexpr auto step              = 15ms;
-            static constexpr auto updateTime        = 5ms;
-            static constexpr auto expectedSleepTime = 10ms;
+            static constexpr auto step                = 15ms;
+            static constexpr auto updateTime          = 5ms;
+            static constexpr auto expectedSleepTime   = 10ms;
+            auto                  simulateShortUpdate = updateLasts(updateTime);
 
             THEN("Sleep so that the elapsed time is roughly the same as the step") {
+
                 runner.runOneIteration(
-                    updateLasts(updateTime), step, timeSource, checkSleepTimeIs(expectedSleepTime));
+                    simulateShortUpdate, step, timeSource, checkSleepTimeIs(expectedSleepTime));
 
                 AND_THEN("After the sleep the elapsed time since the last update is the processing "
                          "duration plus the actual sleep time") {
                     static constexpr auto actualSleepTime = 11ms;
+                    auto checkSleepTime = checkElapseSinceLastIs(updateTime + actualSleepTime);
 
                     currentTime += actualSleepTime;
 
-                    runner.runOneIteration(checkElapseSinceLastIs(updateTime + actualSleepTime),
-                                           step, timeSource, doNothing);
+                    runner.runOneIteration(checkSleepTime, step, timeSource, doNothing);
                 }
             }
         }
@@ -56,12 +58,13 @@ SCENARIO("The GameRunner tries to maintain a stable update rate") {
             static constexpr auto updateTime = step + 3ms;
 
             THEN("Don't sleep at all") {
-                runner.runOneIteration(updateLasts(updateTime), step, timeSource, isNotCalled);
+                auto simulateLongUpdate = updateLasts(updateTime);
+                runner.runOneIteration(simulateLongUpdate, step, timeSource, isNotCalled);
 
                 AND_THEN("It is called immediately and the elapsed time is the update time of the "
                          "previous frame") {
-                    runner.runOneIteration(
-                        checkElapseSinceLastIs(updateTime), step, timeSource, doNothing);
+                    auto checkSleepTime = checkElapseSinceLastIs(updateTime);
+                    runner.runOneIteration(checkSleepTime, step, timeSource, doNothing);
                 }
             }
         }
