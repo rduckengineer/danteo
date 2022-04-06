@@ -4,6 +4,7 @@
 
 using namespace std::string_view_literals;
 
+namespace {
 struct TestStates {
     static constexpr danteo::State first{"first"sv};
     static constexpr danteo::State second{"second"sv};
@@ -14,9 +15,10 @@ struct TestEvents {
     static constexpr danteo::Event next{"next"sv};
     static constexpr danteo::Event end{"end"sv};
 };
+}
 
 // NOLINTNEXTLINE[readability-function-cognitive-complexity]
-SCENARIO("Navigation thingy") {
+SCENARIO("The navigation graph represents the graph of allowed state changes") {
     GIVEN("A navigation graph") {
         auto builder = danteo::StateGraph::Builder{};
 
@@ -25,7 +27,8 @@ SCENARIO("Navigation thingy") {
         danteo::StateGraph navigation = std::move(builder).build();
         WHEN("Trying to find an existing a unique unconditional transition") {
             auto maybeLandingState
-                = navigation.landingStateFrom(TestStates::second, TestEvents::next);
+                = navigation.firstValidTransition(TestStates::second, TestEvents::next);
+
             THEN("The transition is found and it lands on the correct state") {
                 REQUIRE(maybeLandingState);
                 CHECK(*maybeLandingState == TestStates::third);
@@ -34,7 +37,7 @@ SCENARIO("Navigation thingy") {
 
         WHEN("Trying to find a non-existant transition") {
             auto maybeLandingState
-                = navigation.landingStateFrom(TestStates::second, TestEvents::end);
+                = navigation.firstValidTransition(TestStates::second, TestEvents::end);
             THEN("The landing state is empty") { REQUIRE_FALSE(maybeLandingState); }
         }
     }
@@ -52,7 +55,8 @@ SCENARIO("Navigation thingy") {
         WHEN("The conditions matches") {
             takeSecond = true;
             auto maybeLandingState
-                = navigation.landingStateFrom(TestStates::first, TestEvents::next);
+                = navigation.firstValidTransition(TestStates::first, TestEvents::next);
+
             THEN("The first transition's landing state is returned") {
                 REQUIRE(maybeLandingState);
                 CHECK(*maybeLandingState == TestStates::second);
@@ -62,7 +66,8 @@ SCENARIO("Navigation thingy") {
         WHEN("The condition does not match") {
             takeSecond = false;
             auto maybeLandingState
-                = navigation.landingStateFrom(TestStates::first, TestEvents::next);
+                = navigation.firstValidTransition(TestStates::first, TestEvents::next);
+
             THEN("The other transition's landing state is returned") {
                 REQUIRE(maybeLandingState);
                 CHECK(*maybeLandingState == TestStates::third);

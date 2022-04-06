@@ -5,6 +5,7 @@
 #include "engine/state.hpp"
 #include <map>
 #include <optional>
+#include <vector>
 
 namespace danteo {
 
@@ -21,7 +22,7 @@ public:
     explicit StateGraph(std::map<State, std::vector<Transition>> transitions)
         : transitions_{std::move(transitions)} {}
 
-    [[nodiscard]] std::optional<State> landingStateFrom(State startingState, Event event) const;
+    [[nodiscard]] std::optional<State> firstValidTransition(State startingState, Event event) const;
 
 private:
     std::map<State, std::vector<Transition>> const transitions_;
