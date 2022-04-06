@@ -19,6 +19,7 @@ target_link_libraries(
         PRIVATE
         project_options
         project_warnings
+        fmt::fmt
         PUBLIC
         user_interface
         user_interface_core_impl

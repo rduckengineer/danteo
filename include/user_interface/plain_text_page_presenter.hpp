@@ -8,20 +8,21 @@
 
 namespace danteo {
 
-ftxui::Element present(PlainTextPage const& page) {
-    return ftxui::text(std::string{page.content()});
+inline ftxui::Element present(PlainTextPage const& page) {
+    return ftxui::text(std::string{page.content});
 }
 
-ftxui::Component pageFrom(PlainTextPage const& page, std::function<void()> onNext) {
+inline ftxui::Component pageFrom(PlainTextPage const&               page,
+                                 std::function<void(danteo::Event)> eventHandler) {
     return ftxui::Renderer([=] { return present(page); })
-         | ftxui::CatchEvent(
-               [&, onNext_ = std::move(onNext)](ftxui::Event event) { // NOLINT API forces the copy
-                   if (event == ftxui::Event::Return) {
-                       onNext_();
-                       return true;
-                   }
-                   return false;
-               });
+         | ftxui::CatchEvent([&, eventHandler_ = std::move(eventHandler)](
+                                 ftxui::Event event) { // NOLINT API forces the copy
+               if (event == ftxui::Event::Return) {
+                   eventHandler_(page.next_event);
+                   return true;
+               }
+               return false;
+           });
 }
 
 } // namespace danteo

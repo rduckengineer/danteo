@@ -1,15 +1,15 @@
 #include "fake_interactive_screen.hpp"
 
-#include "user_interface/game_presenter.hpp"
+#include "user_interface/game_screen.hpp"
 
 #include <catch2/catch.hpp>
 
 using namespace std::chrono_literals;
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-SCENARIO("The GamePresenter updates the current page when running the screen loop") {
+SCENARIO("The GameScreen updates the current page when running the screen loop") {
     FakeInteractiveScreen screen;
-    danteo::GamePresenter presenter{screen};
+    danteo::GameScreen    presenter{screen};
 
     THEN("By default, the top level component has no child") {
         bool checkWasCalled = false;

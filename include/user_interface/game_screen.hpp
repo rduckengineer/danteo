@@ -1,5 +1,5 @@
-#ifndef DANTEO_GAME_PRESENTER_HPP
-#define DANTEO_GAME_PRESENTER_HPP
+#ifndef DANTEO_GAME_SCREEN_HPP
+#define DANTEO_GAME_SCREEN_HPP
 
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -15,9 +15,9 @@ concept FTXScreen = requires(T screen) {
 };
 
 template <FTXScreen Screen>
-class GamePresenter {
+class GameScreen {
 public:
-    explicit GamePresenter(Screen& screen)
+    explicit GameScreen(Screen& screen)
         : screen_{screen} {}
 
     void setCurrentPage(ftxui::Component page) {
@@ -41,4 +41,4 @@ private:
 
 }
 
-#endif // DANTEO_GAME_PRESENTER_HPP
+#endif // DANTEO_GAME_SCREEN_HPP

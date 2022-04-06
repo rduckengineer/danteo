@@ -27,17 +27,19 @@ ftxui::Element present(TitlePage const& titlePage) {
     return center(std::move(mainBox)) | bgcolor(toFTX(titlePage.page_color));
 }
 
-ftxui::Component pageFromTitle(TitlePage const& titlePage, std::function<void()> onNext) {
-    auto onEnterPressed
-        = [&, onNext_ = std::move(onNext)](ftxui::Event event) { // NOLINT API forces copy
-              if (event == ftxui::Event::Return) {
-                  onNext_();
-                  return true;
-              }
-              return false;
-          };
+ftxui::Component pageFrom(TitlePage const&                   titlePage,
+                          std::function<void(danteo::Event)> eventHandler) {
+    auto onEnterPressed =
+        [&, eventHandler_ = std::move(eventHandler)](ftxui::Event event) { // NOLINT API forces copy
+            if (event == ftxui::Event::Return) {
+                eventHandler_(titlePage.next_event);
+                return true;
+            }
+            return false;
+        };
 
-    return ftxui::Renderer([&titlePage] { return danteo::present(titlePage); })
-         | ftxui::CatchEvent(onEnterPressed);
+    auto presentPage = [&titlePage] { return danteo::present(titlePage); };
+
+    return ftxui::Renderer(std::move(presentPage)) | ftxui::CatchEvent(std::move(onEnterPressed));
 }
 } // namespace danteo

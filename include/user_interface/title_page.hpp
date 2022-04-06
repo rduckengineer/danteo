@@ -2,6 +2,7 @@
 #define DANTEO_TITLE_PAGE_HPP
 
 #include "user_interface/size_2d.hpp"
+#include "engine/event.hpp"
 
 #include <string_view>
 
@@ -22,6 +23,7 @@ struct TitlePage {
     Size2D const           box_size;
     HSV const              box_color;
     HSV const              page_color;
+    Event const            next_event;
 };
 
 } // namespace danteo

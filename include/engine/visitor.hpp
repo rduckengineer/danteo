@@ -10,7 +10,7 @@ struct Visitor : Overload... {
     constexpr Visitor(Overload&&... overload) // NOLINT explicit makes no sense here
         : Overload{std::forward<Overload>(overload)}... {}
 
-    using Overload::operator()...;
+    using Overload::operator()...; // NOLINT somehow one of the tools can't parse this
 };
 
 template <typename... Overload>

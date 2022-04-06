@@ -29,7 +29,7 @@ SCENARIO("The GameRunner tries to maintain a stable update rate") {
     };
 
     GIVEN("A test runner") {
-        danteo::GameRunner runner{danteo::GameClock{currentTime}};
+        danteo::LoopRunner runner{danteo::GameClock{currentTime}};
         WHEN("The update takes less than the step") {
             static constexpr auto step                = 15ms;
             static constexpr auto updateTime          = 5ms;

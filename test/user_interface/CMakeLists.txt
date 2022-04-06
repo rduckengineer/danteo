@@ -4,7 +4,7 @@ add_library(user_interface_tests OBJECT
         plain_text_page_constexpr_test.cpp
         size_2d_constexpr_test.cpp
         title_page_constexpr_test.cpp
-        game_presenter_test.cpp
+        game_screen_test.cpp
         fake_interactive_screen.hpp
         )
 

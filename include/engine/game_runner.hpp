@@ -17,11 +17,11 @@ concept TimeSource = std::is_invocable_r_v<GameClock::time_point, T>;
 template <typename T>
 concept SleepFn = std::is_invocable_r_v<void, T, GameClock::duration>;
 
-class GameRunner {
+class LoopRunner {
 public:
     static constexpr GameClock::duration defaultStep = std::chrono::milliseconds{16};
 
-    constexpr explicit GameRunner(GameClock gameClock = GameClock{GameClock::clock_type::now()})
+    constexpr explicit LoopRunner(GameClock gameClock = GameClock{GameClock::clock_type::now()})
         : gameClock_{std::move(gameClock)} {}
 
     void run(UpdateCallback auto update, GameClock::duration step = defaultStep) {

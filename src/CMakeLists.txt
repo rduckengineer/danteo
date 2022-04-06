@@ -13,6 +13,7 @@ target_link_libraries(
         fmt::fmt
         user_interface_impl
         engine_impl
+        gameplay_impl
 )
 
 target_link_system_libraries(
@@ -26,3 +27,4 @@ target_include_directories(danteo PRIVATE "${CMAKE_BINARY_DIR}/configured_files/
 
 add_subdirectory(engine)
 add_subdirectory(user_interface)
+add_subdirectory(gameplay)
