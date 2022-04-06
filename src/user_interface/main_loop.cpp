@@ -19,7 +19,7 @@ struct GameFlow {
     std::optional<size_t> previous = std::nullopt;
     size_t                current  = 0;
 
-    static constexpr std::array<DanteoPageRequest, 2> applicationPages{
+    inline static std::array<DanteoPageRequest, 2> const applicationPages{
         DanteoPageRequest{TitlePage{.title      = "DanteO",
                                     .box_size   = {Width{50U}, Height{10U}},
                                     .box_color  = HSV{0, 255, 30},
