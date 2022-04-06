@@ -12,6 +12,7 @@ target_link_libraries(
         docopt::docopt
         fmt::fmt
         user_interface_impl
+        engine_impl
 )
 
 target_link_system_libraries(
@@ -23,4 +24,5 @@ target_link_system_libraries(
 
 target_include_directories(danteo PRIVATE "${CMAKE_BINARY_DIR}/configured_files/include")
 
+add_subdirectory(engine)
 add_subdirectory(user_interface)
