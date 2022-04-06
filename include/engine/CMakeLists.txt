@@ -7,6 +7,7 @@ add_library(engine_interface INTERFACE
         event.hpp
         state_graph.hpp
         state_graph_builder.hpp
+        state_machine.hpp
         )
 
 target_include_directories(engine_interface INTERFACE ${DANTEO_INCLUDE_PATH})

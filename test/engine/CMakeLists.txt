@@ -3,6 +3,7 @@ add_library(engine_constexpr_tests OBJECT
         game_runner_test.cpp
         page_request_test.cpp
         state_graph_test.cpp
+        state_machine_test.cpp
         )
 
 target_link_libraries(engine_constexpr_tests PUBLIC
