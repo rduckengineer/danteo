@@ -8,6 +8,9 @@
 
 namespace danteo {
 using DanteoPageRequest = PageRequest<PlainTextPage, TitlePage>;
-}
+
+static_assert(std::is_nothrow_move_constructible_v<DanteoPageRequest>,
+              "New pages should be noexcept on move construction!");
+} // namespace danteo
 
 #endif // DANTEO_DANTEO_PAGE_REQUEST_HPP

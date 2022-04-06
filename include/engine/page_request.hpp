@@ -9,7 +9,9 @@ class PageRequest {
 public:
     using page_set_type = std::variant<PageSet...>;
 
-    constexpr explicit PageRequest(page_set_type page)
+    // cppcheck-suppress[passedByValue] passing by value then moving
+    constexpr explicit PageRequest(page_set_type page) noexcept(
+        std::is_nothrow_move_constructible_v<page_set_type>)
         : page_{std::move(page)} {}
 
     template <typename R, typename Visitor>

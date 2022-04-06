@@ -12,6 +12,8 @@
 
 #include <ftxui/component/screen_interactive.hpp>
 
+#include <array>
+
 namespace danteo {
 struct GameFlow {
     GamePresenter<ftxui::ScreenInteractive>& renderer;
@@ -19,7 +21,7 @@ struct GameFlow {
     std::optional<size_t> previous = std::nullopt;
     size_t                current  = 0;
 
-    inline static std::array<DanteoPageRequest, 2> const applicationPages{
+    static constexpr std::array<DanteoPageRequest, 2> applicationPages{
         DanteoPageRequest{TitlePage{.title      = "DanteO",
                                     .box_size   = {Width{50U}, Height{10U}},
                                     .box_color  = HSV{0, 255, 30},
