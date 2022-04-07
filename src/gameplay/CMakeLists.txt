@@ -5,6 +5,7 @@ add_library(gameplay_impl STATIC
         danteo_page_presenter.cpp
 
         pages/title_page_presenter.cpp
+        pages/dialogue_page_presenter.cpp
         )
 
 target_link_libraries(gameplay_impl
