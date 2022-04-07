@@ -1,10 +1,10 @@
 #include "engine/page_request.hpp"
-#include "engine/visitor.hpp"
 
 #include <catch2/catch.hpp>
 
 using namespace std::string_view_literals;
 
+namespace {
 struct TestTitlePage {
     std::string_view title;
 };
@@ -12,6 +12,10 @@ struct TestTitlePage {
 struct TestExitPage {
     std::string_view farewell;
 };
+
+[[nodiscard]] constexpr std::string_view present(TestTitlePage const& page) { return page.title; }
+[[nodiscard]] constexpr std::string_view present(TestExitPage const& page) { return page.farewell; }
+} // namespace
 
 using TestPageRequest = danteo::PageRequest<TestTitlePage, TestExitPage>;
 
@@ -21,9 +25,7 @@ SCENARIO("A page request specifies the content of a page") {
         auto presenterMatchingString
             = [](std::string_view expected) { // cppcheck-suppress[passedByValue]
                                               // string_view by copy
-                  return danteo::Visitor{
-                      [=](TestTitlePage const& page) -> bool { return page.title == expected; },
-                      [=](TestExitPage const& page) -> bool { return page.farewell == expected; }};
+                  return [=](auto const& page) -> bool { return present(page) == expected; };
               };
 
         AND_GIVEN("A request made from one type") {

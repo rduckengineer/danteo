@@ -1,7 +1,6 @@
 #ifndef DANTEO_PAGE_PRESENTER_HPP
 #define DANTEO_PAGE_PRESENTER_HPP
 
-#include "engine/visitor.hpp"
 #include "user_interface/title_page_presenter.hpp"
 #include "user_interface/plain_text_page_presenter.hpp"
 
