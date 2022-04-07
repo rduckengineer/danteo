@@ -162,7 +162,7 @@ jobs:
         if: runner.os == 'Windows'
         working-directory: ./build
         run: |
-          ctest -C ${{matrix.build_type}} --output-on-failure
+          ctest -C ${{matrix.build_type}} --output-on-failure --VV
           OpenCppCoverage.exe --export_type cobertura:coverage.xml --cover_children -- ctest -C ${{matrix.build_type}}
 
       - name: CPack
