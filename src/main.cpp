@@ -1,4 +1,4 @@
-#include "user_interface/main_loop.hpp"
+#include "gameplay/main_loop.hpp"
 
 #include <docopt/docopt.h>
 

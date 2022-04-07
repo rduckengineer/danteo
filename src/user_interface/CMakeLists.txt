@@ -10,16 +10,12 @@ target_link_libraries(
 )
 
 # Terminal-related display logic
-add_library(user_interface_impl STATIC
-        main_loop.cpp)
+add_library(user_interface_impl INTERFACE
+        )
 
 target_link_libraries(
         user_interface_impl
-        PRIVATE
-        project_options
-        project_warnings
-        fmt::fmt
-        PUBLIC
+        INTERFACE
         user_interface
         user_interface_core_impl
         engine_interface

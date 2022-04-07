@@ -1,4 +1,6 @@
 add_library(gameplay_interfaces INTERFACE
+        main_loop.hpp
+
         danteo_page_request.hpp
         danteo_state_graph.hpp
         danteo_page_component_factory.hpp

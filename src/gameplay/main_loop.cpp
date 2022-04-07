@@ -1,9 +1,9 @@
-#include "user_interface/main_loop.hpp"
+#include "gameplay/main_loop.hpp"
+
+#include "engine/game_runner.hpp"
+#include "user_interface/game_screen.hpp"
 
 #include "gameplay/danteo_update_loop.hpp"
-#include "engine/game_runner.hpp"
-
-#include "user_interface/game_screen.hpp"
 
 #include <ftxui/component/screen_interactive.hpp>
 
