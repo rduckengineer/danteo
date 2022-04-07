@@ -1,44 +1,20 @@
 #ifndef DANTEO_DANTEO_UPDATE_LOOP_HPP
 #define DANTEO_DANTEO_UPDATE_LOOP_HPP
 
-#include "engine/state_machine.hpp"
+#include "engine/page_navigation.hpp"
+#include "engine/state_to_page_request_map.hpp"
 #include "engine/game_clock.hpp"
 
 #include "user_interface/game_screen.hpp"
 
+#include "gameplay/danteo_page_component_factory.hpp"
+#include "gameplay/danteo_page_request.hpp"
 #include "gameplay/danteo_state_graph.hpp"
-#include "gameplay/danteo_page_per_state.hpp"
-#include "gameplay/page_presenter.hpp"
-
-#include <fmt/format.h>
 
 namespace danteo {
-struct DanteoNavigation {
-    std::optional<State> changeState(std::optional<Event> event) {
-        if (!event) { return std::nullopt; }
-        return stateMachine.when(*event);
-    }
 
-    [[nodiscard]] DanteoPageRequest const& pageRequested() const {
-        return pageForState(stateMachine.state());
-    }
-
-private:
-    [[nodiscard]] DanteoPageRequest const& pageForState(State state) const {
-
-        auto maybePageRequest = requestMap.pageFor(state);
-        if (!maybePageRequest) {
-            throw std::logic_error{
-                fmt::format("There is no page corresponding to the state '{}'", state.name)};
-        }
-        return *maybePageRequest;
-    }
-
-    StateMachine          stateMachine{gameStateGraph(), States::titleScreen};
-    StateToPageRequestMap requestMap = pagePerState();
-};
-
-struct GameUpdateLoop {
+class GameUpdateLoop {
+public:
     explicit GameUpdateLoop(GameScreen<ftxui::ScreenInteractive>& gameScreen)
         : gameScreen_{gameScreen} {}
 
@@ -68,8 +44,9 @@ private:
     std::optional<Event> nextEventToApply{};
 
     GameScreen<ftxui::ScreenInteractive>& gameScreen_;
-    PageComponentFactory pageFactory{[&](Event event) { nextEventToApply = event; }};
-    DanteoNavigation     navigation{};
+    DanteoPageComponentFactory        pageFactory{[&](Event event) { nextEventToApply = event; }};
+    PageNavigation<DanteoPageRequest> navigation{
+        StateMachine{gameStateGraph(), States::titleScreen}, pagePerState()};
 };
 } // namespace danteo
 

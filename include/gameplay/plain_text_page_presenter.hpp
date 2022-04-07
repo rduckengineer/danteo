@@ -1,7 +1,7 @@
 #ifndef DANTEO_PLAIN_TEXT_PAGE_PRESENTER_HPP
 #define DANTEO_PLAIN_TEXT_PAGE_PRESENTER_HPP
 
-#include "user_interface/plain_text_page.hpp"
+#include "gameplay/plain_text_page.hpp"
 
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component.hpp>

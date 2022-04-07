@@ -11,7 +11,7 @@ StateGraph gameStateGraph() {
 
     return std::move(builder).build();
 }
-StateToPageRequestMap pagePerState() {
+StateToPageRequestMap<DanteoPageRequest> pagePerState() {
     return StateToPageRequestMap{std::map<State, DanteoPageRequest>{
         {States::titleScreen,
          DanteoPageRequest{TitlePage{.title      = "DanteO",

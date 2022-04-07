@@ -1,17 +1,16 @@
-#ifndef DANTEO_PAGE_PRESENTER_HPP
-#define DANTEO_PAGE_PRESENTER_HPP
+#ifndef DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP
+#define DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP
 
-#include "user_interface/title_page_presenter.hpp"
-#include "user_interface/plain_text_page_presenter.hpp"
-
-#include "gameplay/danteo_state_graph.hpp"
+#include "gameplay/title_page_presenter.hpp"
+#include "gameplay/plain_text_page_presenter.hpp"
+#include "gameplay/danteo_page_request.hpp"
 
 #include "ftxui/component/component.hpp"
 
 namespace danteo {
-class PageComponentFactory {
+class DanteoPageComponentFactory {
 public:
-    explicit PageComponentFactory(std::function<void(Event)> eventHandler)
+    explicit DanteoPageComponentFactory(std::function<void(Event)> eventHandler)
         : eventHandler_(std::move(eventHandler)) {}
 
     [[nodiscard]] ftxui::Component makePageAt(DanteoPageRequest const& request) const {
@@ -25,4 +24,4 @@ private:
 };
 } // namespace danteo
 
-#endif // DANTEO_PAGE_PRESENTER_HPP
+#endif // DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP

@@ -1,4 +1,4 @@
-#include "user_interface/title_page.hpp"
+#include "gameplay/title_page.hpp"
 
 #include <catch2/catch.hpp>
 

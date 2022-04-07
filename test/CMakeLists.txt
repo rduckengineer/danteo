@@ -27,6 +27,7 @@ add_executable(tests
 
 add_subdirectory(engine)
 add_subdirectory(user_interface)
+add_subdirectory(gameplay)
 
 target_link_libraries(tests
         PUBLIC
@@ -34,7 +35,8 @@ target_link_libraries(tests
         project_warnings
         project_options
         user_interface_tests
-        engine_constexpr_tests)
+        engine_constexpr_tests
+        gameplay_tests)
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries

@@ -2,7 +2,9 @@
 #define DANTEO_DANTEO_STATE_GRAPH_HPP
 
 #include "engine/state_graph.hpp"
-#include "gameplay/danteo_page_per_state.hpp"
+#include "engine/state_to_page_request_map.hpp"
+
+#include "danteo_page_request.hpp"
 
 namespace danteo {
 
@@ -18,7 +20,7 @@ struct Events {
 
 StateGraph gameStateGraph();
 
-StateToPageRequestMap pagePerState();
+StateToPageRequestMap<DanteoPageRequest> pagePerState();
 } // namespace danteo
 
 #endif // DANTEO_DANTEO_STATE_GRAPH_HPP
