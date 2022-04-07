@@ -1,8 +1,8 @@
 #ifndef DANTEO_DANTEO_PAGE_REQUEST_HPP
 #define DANTEO_DANTEO_PAGE_REQUEST_HPP
 
-#include "gameplay/plain_text_page.hpp"
-#include "gameplay/title_page.hpp"
+#include "gameplay/pages/plain_text_page.hpp"
+#include "gameplay/pages/title_page.hpp"
 
 #include "engine/page_request.hpp"
 

@@ -4,10 +4,10 @@ add_library(gameplay_interfaces INTERFACE
         danteo_page_component_factory.hpp
         danteo_update_loop.hpp
 
-        plain_text_page.hpp
-        title_page.hpp
-        plain_text_page_presenter.hpp
-        title_page_presenter.hpp
+        pages/plain_text_page.hpp
+        pages/title_page.hpp
+        pages/plain_text_page_presenter.hpp
+        pages/title_page_presenter.hpp
         )
 
 target_link_libraries(gameplay_interfaces INTERFACE

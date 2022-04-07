@@ -1,8 +1,8 @@
 #ifndef DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP
 #define DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP
 
-#include "gameplay/title_page_presenter.hpp"
-#include "gameplay/plain_text_page_presenter.hpp"
+#include "gameplay/pages/title_page_presenter.hpp"
+#include "gameplay/pages/plain_text_page_presenter.hpp"
 #include "gameplay/danteo_page_request.hpp"
 
 #include "ftxui/component/component.hpp"

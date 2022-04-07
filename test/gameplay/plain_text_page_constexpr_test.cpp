@@ -1,4 +1,4 @@
-#include "gameplay/plain_text_page.hpp"
+#include "gameplay/pages/plain_text_page.hpp"
 
 #include <catch2/catch.hpp>
 

@@ -1,6 +1,8 @@
 add_library(gameplay_impl STATIC
         danteo_state_graph.cpp
         danteo_page_presenter.cpp
+
+        pages/title_page_presenter.cpp
         )
 
 target_link_libraries(gameplay_impl

@@ -1,4 +1,4 @@
-#include "gameplay/plain_text_page_presenter.hpp"
+#include "gameplay/pages/plain_text_page_presenter.hpp"
 
 #include <ftxui/screen/screen.hpp>
 #include <catch2/catch.hpp>

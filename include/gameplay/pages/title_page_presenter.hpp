@@ -1,7 +1,7 @@
 #ifndef DANTEO_TITLE_PAGE_PRESENTER_HPP
 #define DANTEO_TITLE_PAGE_PRESENTER_HPP
 
-#include "gameplay/title_page.hpp"
+#include "gameplay/pages/title_page.hpp"
 
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/component/component_base.hpp>
