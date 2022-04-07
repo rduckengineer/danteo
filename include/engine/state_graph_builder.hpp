@@ -3,7 +3,7 @@
 
 #include "engine/state_graph.hpp"
 
-namespace danteo {
+namespace danteo::engine {
 
 class StateGraph::Builder {
     class TransitionListBuilder;
@@ -60,6 +60,6 @@ public:
 private:
     std::map<State, std::vector<Transition>> transitions;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_STATE_GRAPH_BUILDER_HPP

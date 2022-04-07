@@ -9,7 +9,7 @@
 namespace danteo {
 ftxui::Element   present(TitlePage const& titlePage);
 ftxui::Component pageFrom(TitlePage const&                   titlePage,
-                          std::function<void(danteo::Event)> eventHandler);
+                          std::function<void(engine::Event)> eventHandler);
 } // namespace danteo
 
 #endif // DANTEO_TITLE_PAGE_PRESENTER_HPP

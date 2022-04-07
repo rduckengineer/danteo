@@ -6,7 +6,7 @@
 
 #include <fmt/format.h>
 
-namespace danteo {
+namespace danteo::engine {
 template <typename RequestT>
 class PageNavigation {
 public:
@@ -37,6 +37,6 @@ private:
     StateMachine                    stateMachine_;
     StateToPageRequestMap<RequestT> requestMap_;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_PAGENAVIGATION_HPP

@@ -27,8 +27,8 @@ ftxui::Element present(TitlePage const& titlePage) {
     return center(std::move(mainBox)) | bgcolor(toFTX(titlePage.page_color));
 }
 
-ftxui::Component pageFrom(TitlePage const&                   titlePage,
-                          std::function<void(danteo::Event)> eventHandler) {
+ftxui::Component pageFrom(TitlePage const&                           titlePage,
+                          std::function<void(danteo::engine::Event)> eventHandler) {
     auto onEnterPressed =
         [&, eventHandler_ = std::move(eventHandler)](ftxui::Event event) { // NOLINT API forces copy
             if (event == ftxui::Event::Return) {

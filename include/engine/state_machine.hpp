@@ -3,7 +3,7 @@
 
 #include "engine/state_graph.hpp"
 
-namespace danteo {
+namespace danteo::engine {
 
 class StateMachine {
 public:
@@ -11,7 +11,7 @@ public:
         : graph_{std::move(graph)}
         , currentState_{initialState} {}
 
-    [[nodiscard]] State  state() const { return {currentState_}; }
+    [[nodiscard]] State state() const { return {currentState_}; }
 
     std::optional<State> when(Event event) {
         auto maybeTransition = graph_.firstValidTransition(currentState_, event);
@@ -24,6 +24,6 @@ private:
     State      currentState_;
 };
 
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_STATE_MACHINE_HPP

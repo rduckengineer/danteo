@@ -7,7 +7,7 @@
 #include "engine/page_request.hpp"
 
 namespace danteo {
-using DanteoPageRequest = PageRequest<PlainTextPage, TitlePage>;
+using DanteoPageRequest = engine::PageRequest<PlainTextPage, TitlePage>;
 
 static_assert(std::is_nothrow_move_constructible_v<DanteoPageRequest>,
               "New pages should be noexcept on move construction!");

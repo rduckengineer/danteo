@@ -10,9 +10,9 @@
 namespace danteo {
 
 void mainLoop() {
-    auto       screen = ftxui::ScreenInteractive::Fullscreen();
-    GameScreen gameScreen{screen};
-    LoopRunner runner{};
+    auto               screen = ftxui::ScreenInteractive::Fullscreen();
+    GameScreen         gameScreen{screen};
+    engine::LoopRunner runner{};
 
     GameUpdateLoop loop{gameScreen};
 
@@ -22,7 +22,7 @@ void mainLoop() {
 
         loop.initialize();
 
-        runner.run([&](GameClock::Elapsed elapsed) { return loop.update(elapsed); });
+        runner.run([&](engine::GameClock::Elapsed elapsed) { return loop.update(elapsed); });
     }};
 
     gameScreen.runUI();

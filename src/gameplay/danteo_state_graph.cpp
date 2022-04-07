@@ -3,16 +3,16 @@
 #include "engine/state_graph_builder.hpp"
 
 namespace danteo {
-StateGraph gameStateGraph() {
-    StateGraph::Builder builder{};
+engine::StateGraph gameStateGraph() {
+    engine::StateGraph::Builder builder{};
 
     builder / States::titleScreen + Events::next = States::secondPage;
     builder / States::secondPage + Events::next  = States::exit;
 
     return std::move(builder).build();
 }
-StateToPageRequestMap<DanteoPageRequest> pagePerState() {
-    return StateToPageRequestMap{std::map<State, DanteoPageRequest>{
+engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
+    return engine::StateToPageRequestMap{std::map<engine::State, DanteoPageRequest>{
         {States::titleScreen,
          DanteoPageRequest{TitlePage{.title      = "DanteO",
                                      .box_size   = {Width{50U}, Height{10U}}, // NOLINT

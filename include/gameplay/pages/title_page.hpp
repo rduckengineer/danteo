@@ -23,7 +23,7 @@ struct TitlePage {
     Size2D const           box_size;
     HSV const              box_color;
     HSV const              page_color;
-    Event const            next_event;
+    engine::Event const    next_event;
 };
 
 } // namespace danteo

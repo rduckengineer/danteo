@@ -7,29 +7,31 @@ using namespace std::chrono_literals;
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
 SCENARIO("The GameRunner tries to maintain a stable update rate") {
-    auto currentTime = danteo::GameClock::clock_type::now();
+    auto currentTime = danteo::engine::GameClock::clock_type::now();
 
-    auto timeSource  = [&currentTime]() -> danteo::GameClock::time_point { return currentTime; };
+    auto timeSource
+        = [&currentTime]() -> danteo::engine::GameClock::time_point { return currentTime; };
     auto doNothing   = []([[maybe_unused]] auto val) {};
     auto isNotCalled = []([[maybe_unused]] auto val) { FAIL(true); };
-    auto updateLasts = [&](danteo::GameClock::duration duration) {
+    auto updateLasts = [&](danteo::engine::GameClock::duration duration) {
         return [&currentTime, duration]([[maybe_unused]] auto elapsed) -> bool {
             currentTime += duration;
             return true;
         };
     };
-    auto checkElapseSinceLastIs = [](danteo::GameClock::duration duration) {
-        return [=](danteo::GameClock::Elapsed elapsed) {
+    auto checkElapseSinceLastIs = [](danteo::engine::GameClock::duration duration) {
+        return [=](danteo::engine::GameClock::Elapsed elapsed) {
             CHECK(elapsed.sinceLast == duration);
             return false;
         };
     };
-    auto checkSleepTimeIs = [](danteo::GameClock::duration duration) {
-        return [=](danteo::GameClock::duration sleepTime) { REQUIRE(sleepTime == duration); };
+    auto checkSleepTimeIs = [](danteo::engine::GameClock::duration duration) {
+        return
+            [=](danteo::engine::GameClock::duration sleepTime) { REQUIRE(sleepTime == duration); };
     };
 
     GIVEN("A test runner") {
-        danteo::LoopRunner runner{danteo::GameClock{currentTime}};
+        danteo::engine::LoopRunner runner{danteo::engine::GameClock{currentTime}};
         WHEN("The update takes less than the step") {
             static constexpr auto step                = 15ms;
             static constexpr auto updateTime          = 5ms;

@@ -9,18 +9,18 @@
 namespace danteo {
 
 struct States {
-    static constexpr State titleScreen{"titleScreen"};
-    static constexpr State secondPage{"secondPage"};
-    static constexpr State exit{"EXIT"};
+    static constexpr engine::State titleScreen{"titleScreen"};
+    static constexpr engine::State secondPage{"secondPage"};
+    static constexpr engine::State exit{"EXIT"};
 };
 
 struct Events {
-    static constexpr Event next{"next"};
+    static constexpr engine::Event next{"next"};
 };
 
-StateGraph gameStateGraph();
+engine::StateGraph gameStateGraph();
 
-StateToPageRequestMap<DanteoPageRequest> pagePerState();
+engine::StateToPageRequestMap<DanteoPageRequest> pagePerState();
 } // namespace danteo
 
 #endif // DANTEO_DANTEO_STATE_GRAPH_HPP

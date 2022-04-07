@@ -5,7 +5,7 @@
 using namespace std::string_view_literals;
 
 SCENARIO("Title pages describe their content") {
-    using danteo::Event;
+    using danteo::engine::Event;
     using danteo::Height;
     using danteo::HSV;
     using danteo::Size2D;

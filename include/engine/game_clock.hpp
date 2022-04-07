@@ -3,7 +3,7 @@
 
 #include <chrono>
 
-namespace danteo {
+namespace danteo::engine {
 class GameClock {
 public:
     using clock_type = std::chrono::steady_clock;
@@ -44,6 +44,6 @@ private:
     clock_type::time_point const start_;
     clock_type::time_point       lastUpdate_;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_GAME_CLOCK_HPP

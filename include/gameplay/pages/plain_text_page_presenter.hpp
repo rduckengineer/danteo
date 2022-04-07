@@ -13,7 +13,7 @@ inline ftxui::Element present(PlainTextPage const& page) {
 }
 
 inline ftxui::Component pageFrom(PlainTextPage const&               page,
-                                 std::function<void(danteo::Event)> eventHandler) {
+                                 std::function<void(engine::Event)> eventHandler) {
     return ftxui::Renderer([=] { return present(page); })
          | ftxui::CatchEvent([&, eventHandler_ = std::move(eventHandler)](
                                  ftxui::Event event) { // NOLINT API forces the copy

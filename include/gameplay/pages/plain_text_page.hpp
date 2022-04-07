@@ -8,7 +8,7 @@
 namespace danteo {
 struct PlainTextPage {
     std::string_view const content;
-    Event const            next_event;
+    engine::Event const    next_event;
 };
 } // namespace danteo
 

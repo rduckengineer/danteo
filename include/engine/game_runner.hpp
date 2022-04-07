@@ -6,7 +6,7 @@
 #include <type_traits>
 #include <thread>
 
-namespace danteo {
+namespace danteo::engine {
 
 template <typename T>
 concept UpdateCallback = std::is_invocable_r_v<bool, T, GameClock::Elapsed>;
@@ -50,6 +50,6 @@ private:
     GameClock gameClock_;
 };
 
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_GAME_RUNNER_HPP

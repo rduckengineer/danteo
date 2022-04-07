@@ -10,7 +10,7 @@
 namespace danteo {
 class DanteoPageComponentFactory {
 public:
-    explicit DanteoPageComponentFactory(std::function<void(Event)> eventHandler)
+    explicit DanteoPageComponentFactory(std::function<void(engine::Event)> eventHandler)
         : eventHandler_(std::move(eventHandler)) {}
 
     [[nodiscard]] ftxui::Component makePageAt(DanteoPageRequest const& request) const {
@@ -20,7 +20,7 @@ public:
     }
 
 private:
-    std::function<void(Event)> eventHandler_;
+    std::function<void(engine::Event)> eventHandler_;
 };
 } // namespace danteo
 

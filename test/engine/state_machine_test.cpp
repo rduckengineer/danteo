@@ -6,17 +6,17 @@
 using namespace std::string_view_literals;
 
 namespace {
-constexpr danteo::State young{"Young"sv};
-constexpr danteo::State old{"Old"sv};
-constexpr danteo::State heaven{"Heaven"sv};
-constexpr danteo::State hell{"Hell"sv};
+constexpr danteo::engine::State young{"Young"sv};
+constexpr danteo::engine::State old{"Old"sv};
+constexpr danteo::engine::State heaven{"Heaven"sv};
+constexpr danteo::engine::State hell{"Hell"sv};
 
-constexpr danteo::Event growOld{"GrowOld"sv};
-constexpr danteo::Event die{"Die"sv};
-constexpr danteo::Event respawn{"Respawn"};
+constexpr danteo::engine::Event growOld{"GrowOld"sv};
+constexpr danteo::engine::Event die{"Die"sv};
+constexpr danteo::engine::Event respawn{"Respawn"};
 
 auto const graph = [](bool& hasBeenNice) {
-    danteo::StateGraph::Builder builder{};
+    danteo::engine::StateGraph::Builder builder{};
     builder / young + growOld                          = old;
     builder / old + die | [&] { return hasBeenNice; }  = heaven;
     builder / old + die | [&] { return !hasBeenNice; } = hell;
@@ -30,7 +30,7 @@ SCENARIO("A State Machine manages the current state") {
     GIVEN("A state machine containing a graph") {
         bool hasBeenNice = true;
 
-        danteo::StateMachine stateMachine{graph(hasBeenNice), young};
+        danteo::engine::StateMachine stateMachine{graph(hasBeenNice), young};
 
         THEN("The initial state matches the one given at construction") {
             CHECK(stateMachine.state() == young);

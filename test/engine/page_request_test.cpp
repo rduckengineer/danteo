@@ -17,7 +17,7 @@ struct TestExitPage {
 [[nodiscard]] constexpr std::string_view present(TestExitPage const& page) { return page.farewell; }
 } // namespace
 
-using TestPageRequest = danteo::PageRequest<TestTitlePage, TestExitPage>;
+using TestPageRequest = danteo::engine::PageRequest<TestTitlePage, TestExitPage>;
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
 SCENARIO("A page request specifies the content of a page") {

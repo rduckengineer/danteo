@@ -3,7 +3,7 @@
 
 #include <variant>
 
-namespace danteo {
+namespace danteo::engine {
 template <typename... PageSet>
 class PageRequest {
 public:
@@ -23,6 +23,6 @@ public:
 private:
     page_set_type page_;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_PAGE_REQUEST_HPP

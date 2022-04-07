@@ -7,7 +7,7 @@
 #include <map>
 #include <optional>
 
-namespace danteo {
+namespace danteo::engine {
 template <typename RequestT>
 class StateToPageRequestMap {
 public:
@@ -23,6 +23,6 @@ public:
 private:
     std::map<State, RequestT> requestPerState_;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_STATE_TO_PAGE_REQUEST_MAP_HPP

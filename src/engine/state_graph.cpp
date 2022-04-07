@@ -1,6 +1,6 @@
 #include "engine/state_graph.hpp"
 
-namespace danteo {
+namespace danteo::engine {
 std::optional<State> StateGraph::firstValidTransition(State startingState, Event event) const {
     auto transitionIt = transitions_.find(startingState);
     if (transitionIt == transitions_.end()) { return std::nullopt; }
@@ -15,4 +15,4 @@ std::optional<State> StateGraph::firstValidTransition(State startingState, Event
              ? foundTransition->landingState
              : std::optional<State>{};
 }
-} // namespace danteo
+} // namespace danteo::engine

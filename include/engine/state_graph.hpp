@@ -7,7 +7,7 @@
 #include <optional>
 #include <vector>
 
-namespace danteo {
+namespace danteo::engine {
 
 class StateGraph {
     struct Transition {
@@ -27,6 +27,6 @@ public:
 private:
     std::map<State, std::vector<Transition>> const transitions_;
 };
-} // namespace danteo
+} // namespace danteo::engine
 
 #endif // DANTEO_STATE_GRAPH_HPP

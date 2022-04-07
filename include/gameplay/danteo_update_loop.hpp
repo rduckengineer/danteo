@@ -20,7 +20,7 @@ public:
 
     void initialize() { updateCurrentPage(navigation.pageRequested()); }
 
-    bool update([[maybe_unused]] GameClock::Elapsed elapsed) {
+    bool update([[maybe_unused]] engine::GameClock::Elapsed elapsed) {
         auto newState = navigation.changeState(nextEventToApply);
         nextEventToApply.reset();
 
@@ -41,12 +41,12 @@ private:
         gameScreen_.setCurrentPage(pageFactory.makePageAt(request));
     }
 
-    std::optional<Event> nextEventToApply{};
+    std::optional<engine::Event> nextEventToApply{};
 
     GameScreen<ftxui::ScreenInteractive>& gameScreen_;
-    DanteoPageComponentFactory        pageFactory{[&](Event event) { nextEventToApply = event; }};
-    PageNavigation<DanteoPageRequest> navigation{
-        StateMachine{gameStateGraph(), States::titleScreen}, pagePerState()};
+    DanteoPageComponentFactory pageFactory{[&](engine::Event event) { nextEventToApply = event; }};
+    engine::PageNavigation<DanteoPageRequest> navigation{
+        engine::StateMachine{gameStateGraph(), States::titleScreen}, pagePerState()};
 };
 } // namespace danteo
 
