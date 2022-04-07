@@ -1,5 +1,7 @@
 #include "gameplay/pages/dialogue_page_presenter.hpp"
 
+#include <ranges>
+
 namespace danteo {
 ftxui::Component pageFrom(DialoguePage const&                page,
                           std::function<void(engine::Event)> eventHandler) {
@@ -8,17 +10,17 @@ ftxui::Component pageFrom(DialoguePage const&                page,
         return ftxui::text(std::string{character.name}) | ftxui::bold;
     };
 
-    auto lineAlignedLeft = [&](DialogueLine const& leftLine) {
+    auto lineAlignedLeft = [=](DialogueLine const& leftLine) {
         return ftxui::vbox({characterName(leftLine.character),
                             ftxui::paragraphAlignLeft(std::string{leftLine.line})});
     };
 
-    auto lineAlignedRight = [&](DialogueLine const& rightLine) {
+    auto lineAlignedRight = [=](DialogueLine const& rightLine) {
         return ftxui::vbox({characterName(rightLine.character) | ftxui::align_right,
                             ftxui::paragraphAlignRight(std::string{rightLine.line})});
     };
 
-    auto lineAlignedCenter = [&](DialogueLine const& centerLine) {
+    auto lineAlignedCenter = [=](DialogueLine const& centerLine) {
         return ftxui::vbox({characterName(centerLine.character) | ftxui::center,
                             ftxui::paragraphAlignCenter(std::string{centerLine.line})});
     };
