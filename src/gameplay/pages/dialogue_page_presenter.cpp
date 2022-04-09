@@ -1,6 +1,9 @@
 #include "gameplay/pages/dialogue_page_presenter.hpp"
 
-#include <ranges>
+#include "warnings_ignore_push.hpp"
+#include "range/v3/view/transform.hpp"
+#include "range/v3/range/conversion.hpp"
+#include "warnings_ignore_pop.hpp"
 
 namespace danteo {
 ftxui::Component pageFrom(DialoguePage const&                page,
@@ -35,11 +38,10 @@ ftxui::Component pageFrom(DialoguePage const&                page,
     };
 
     auto staticPage = [=] {
-        ftxui::Elements elements;
-        for (auto const& line : page.lines) {
-            elements.push_back(printLine(line));
-        }
-        return ftxui::vbox(std::move(elements))
+        using ranges::views::transform;
+        using ranges::to_vector;
+
+        return ftxui::vbox(page.lines | transform(printLine) | to_vector)
              | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth) | ftxui::center;
     };
 

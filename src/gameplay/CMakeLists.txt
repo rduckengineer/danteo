@@ -13,6 +13,7 @@ target_link_libraries(gameplay_impl
         project_options
         project_warnings
         fmt::fmt
+        range-v3::range-v3
         PUBLIC
         gameplay_interfaces
         engine_impl

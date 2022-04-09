@@ -23,6 +23,11 @@ if (TRUE OR NOT ftxui_POPULATED)
     add_subdirectory(${ftxui_SOURCE_DIR} ${ftxui_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif ()
 
+FetchContent_Declare(ranges-v3
+        GIT_REPOSITORY https://github.com/ericniebler/range-v3
+        GIT_TAG d800a032132512a54c291ce55a2a43e0460591c7)
+FetchContent_MakeAvailable(ranges-v3)
+
 
 # Note: by default ENABLE_DEVELOPER_MODE is True
 # This means that all analysis (sanitizers, static analysis)
@@ -112,6 +117,7 @@ dynamic_project_options(
         # GCC_WARNINGS     # Override the defaults for the GCC warnings
         CPPCHECK_OPTIONS
         -iftxui/* # We don't want to check FTXUI's code :)))
+        --suppress=preprocessorErrorDirective # for Range-V3
 )
 
 target_compile_features(project_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})

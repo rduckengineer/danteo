@@ -37,7 +37,7 @@ engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
                               .line      = "General Kenobi!",
                               .aligned   = DialogueLine::Aligned::Right},
              }},
-            std::vector<std::string>{"choice1", "choice2"}});
+            std::vector<std::string>{"*laugh maniacally*", "*flex your 4 lightsabers*"}});
 
     pagesPerState.try_emplace(
         States::dialoguePage,
