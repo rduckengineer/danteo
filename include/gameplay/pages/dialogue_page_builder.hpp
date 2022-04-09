@@ -63,25 +63,26 @@ private:
     Character const& character_;
 };
 
-DialogueBuilder::CharacterSideBuilder DialogueBuilder::place(const Character& character) {
+inline DialogueBuilder::CharacterSideBuilder DialogueBuilder::place(const Character& character) {
     return DialogueBuilder{}.andPlace(character);
 }
 
-DialogueBuilder::CharacterSideBuilder DialogueBuilder::andPlace(Character const& character) && {
+inline DialogueBuilder::CharacterSideBuilder DialogueBuilder::andPlace(
+    Character const& character) && {
     return {std::move(*this), character};
 }
 
-DialogueBuilder::LineBuilder DialogueBuilder::then(const Character& character) && {
+inline DialogueBuilder::LineBuilder DialogueBuilder::then(const Character& character) && {
     return {std::move(*this), character};
 }
 
-DialogueBuilder DialogueBuilder::LineBuilder::says(std::string line) && {
+inline DialogueBuilder DialogueBuilder::LineBuilder::says(std::string line) && {
     parent_.page_.lines.push_back(
         DialogueLine{character_, std::move(line), parent_.characterSide(character_)});
     return std::move(parent_);
 }
 
-DialogueLine::Aligned DialogueBuilder::characterSide(const Character& character) {
+inline DialogueLine::Aligned DialogueBuilder::characterSide(const Character& character) {
     auto alignmentIt = ranges::find_if(characterPlacement_, [&](auto const& pair) {
         return pair.first == character;
     });

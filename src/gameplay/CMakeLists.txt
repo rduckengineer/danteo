@@ -11,6 +11,9 @@ add_library(gameplay_impl STATIC
         pages/scene_change_page_presenter.cpp
 
         scenes/ceo_scene.hpp
+        scenes/what_is_dantio.hpp
+        scenes/what_is_dantio_graph.cpp
+        scenes/what_is_dantio_pages.cpp
         )
 
 target_link_libraries(gameplay_impl
