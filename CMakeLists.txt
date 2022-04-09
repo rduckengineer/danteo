@@ -117,6 +117,7 @@ dynamic_project_options(
         # GCC_WARNINGS     # Override the defaults for the GCC warnings
         CPPCHECK_OPTIONS
         -iftxui/* # We don't want to check FTXUI's code :)))
+        -irange/v3/* # same for Rang-V3
         --suppress=preprocessorErrorDirective # for Range-V3
 )
 
