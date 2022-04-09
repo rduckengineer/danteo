@@ -2,7 +2,7 @@
 #define DANTEO_DANTEO_PAGE_COMPONENT_FACTORY_HPP
 
 #include "gameplay/pages/title_page_presenter.hpp"
-#include "gameplay/pages/plain_text_page_presenter.hpp"
+#include "gameplay/pages/scene_change_page_presenter.hpp"
 #include "gameplay/pages/dialogue_page_presenter.hpp"
 #include "gameplay/danteo_page_request.hpp"
 

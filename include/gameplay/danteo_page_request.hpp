@@ -1,7 +1,7 @@
 #ifndef DANTEO_DANTEO_PAGE_REQUEST_HPP
 #define DANTEO_DANTEO_PAGE_REQUEST_HPP
 
-#include "gameplay/pages/plain_text_page.hpp"
+#include "gameplay/pages/scene_change_page.hpp"
 #include "gameplay/pages/title_page.hpp"
 #include "gameplay/pages/dialogue_page.hpp"
 
@@ -9,7 +9,7 @@
 
 namespace danteo {
 using DanteoPageRequest
-    = engine::PageRequest<PlainTextPage, TitlePage, DialoguePageOnly, DialoguePageWithChoice>;
+    = engine::PageRequest<SceneChangePage, TitlePage, DialoguePageOnly, DialoguePageWithChoice>;
 
 static_assert(std::is_nothrow_move_constructible_v<DanteoPageRequest>,
               "New pages should be noexcept on move construction!");

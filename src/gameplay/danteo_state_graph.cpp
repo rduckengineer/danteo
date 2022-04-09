@@ -18,11 +18,12 @@ constexpr Character                  PM{"Cerberus"};
 engine::StateGraph gameStateGraph() {
     engine::StateGraph::Builder builder{};
 
-    builder / States::titleScreen + Events::next = States::welcome;
-    builder / States::welcome + Events::next     = States::welcomeCont;
-    builder / States::welcomeCont + Events::next = States::buzzwords;
-    builder / States::buzzwords + Events::next   = States::theClouds;
-    builder / States::theClouds + Events::next   = States::exit;
+    builder / States::titleScreen + Events::next   = States::welcome;
+    builder / States::welcome + Events::next       = States::welcomeCont;
+    builder / States::welcomeCont + Events::next   = States::corridorScene;
+    builder / States::corridorScene + Events::next = States::buzzwords;
+    builder / States::buzzwords + Events::next     = States::theClouds;
+    builder / States::theClouds + Events::next     = States::exit;
 
     return std::move(builder).build();
 }
@@ -60,12 +61,14 @@ engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
 
                  .then(Virgil)
                  .says("No time, I said! The prod is on fire -literally- so it's a "
-                       "all-hands-and-hooves on deck situation.")
+                       "all-hands-or-hooves on deck situation.")
 
                  .then(Virgil)
                  .says("Our output is barely keeping up with demand. QA has been rejecting our "
-                       "release candidates over and over again because of the defect rate. So get "
-                       "to it, we need to ship ASAP!")
+                       "release candidates over and over again because of the defect rate.")
+                 .then(Virgil)
+                 .says("I just got off a call with the lower-ups, and they're getting impatient. "
+                       "So get to it, we need to ship ASAP!")
 
                  .then(You)
                  .says("I-")
@@ -73,6 +76,9 @@ engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
                  .then(Virgil)
                  .says("Get moving!")},
             Events::next});
+
+    pagesPerState.try_emplace(
+        States::corridorScene, SceneChangePage{"In the corridor", Events::next});
 
     pagesPerState.try_emplace(
         States::buzzwords,
@@ -87,8 +93,7 @@ engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
                  .says("What is this place?")
                  .then(PM)
                  .says("DantIO is a cutting-edge platform for optimizing crowd-sourced energy "
-                       "production. The edges are indeed pretty sharp, so be careful. The "
-                       "lower-ups want to disrupt the market by leveraging the clouds' "
+                       "production. We want to disrupt the market by leveraging the clouds "
                        "infrastructure-")},
             std::vector<std::string>{"You mean \"the cloud\"."},
             std::vector<engine::Event>{Events::next}});

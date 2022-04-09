@@ -1,4 +1,4 @@
-#include "gameplay/pages/plain_text_page_presenter.hpp"
+#include "gameplay/pages/scene_change_page_presenter.hpp"
 
 #include <ftxui/screen/screen.hpp>
 #include <catch2/catch.hpp>
@@ -7,7 +7,7 @@ using namespace std::string_view_literals;
 
 SCENARIO("Plain text pages can be rendered on a Screen") {
     GIVEN("A PlainTextPage") {
-        danteo::PlainTextPage page{"Content"sv, danteo::engine::Event{"next"sv}};
+        danteo::SceneChangePage page{"Content"sv, danteo::engine::Event{"next"sv}};
 
         AND_GIVEN("A Screen") {
             using ftxui::Dimensions;

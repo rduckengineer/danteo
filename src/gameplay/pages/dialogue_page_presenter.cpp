@@ -43,9 +43,11 @@ ftxui::Component pageFrom(DialoguePageWithChoice const&      page,
     return [&page, eventHandler_ = std::move(eventHandler)]() mutable {
         int selection = 0;
 
+        auto option = verticalMenuAlignedRight(selection, std::move(eventHandler_), page.nextEvents);
+
         auto menu = ftxui::Menu(
             &page.choices, &selection,
-            verticalMenuAlignedRight(selection, std::move(eventHandler_), page.nextEvents));
+            option);
 
         return ftxui::Renderer(menu, [&] {
             return ftxui::vbox({staticPageFrom(page)(), menu->Render()})

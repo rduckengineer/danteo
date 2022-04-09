@@ -1,15 +1,15 @@
-#ifndef DANTEO_PLAIN_TEXT_PAGE_HPP
-#define DANTEO_PLAIN_TEXT_PAGE_HPP
+#ifndef DANTEO_SCENE_CHANGE_PAGE_HPP
+#define DANTEO_SCENE_CHANGE_PAGE_HPP
 
 #include "engine/event.hpp"
 
 #include <string_view>
 
 namespace danteo {
-struct PlainTextPage {
+struct SceneChangePage {
     std::string_view const content;
     engine::Event const    next_event;
 };
 } // namespace danteo
 
-#endif // DANTEO_PLAIN_TEXT_PAGE_HPP
+#endif // DANTEO_SCENE_CHANGE_PAGE_HPP
