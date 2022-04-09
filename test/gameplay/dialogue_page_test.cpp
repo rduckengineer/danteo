@@ -40,17 +40,14 @@ SCENARIO("A DialoguePage defines a sequence of lines of dialogue") {
             static constexpr auto generalKenobi = "General Kenobi!"sv;
 
             danteo::DialoguePage page{
-                danteo::DialogueBuilder::place(kenobi)
-                    .left()
-                    .andPlace(grievous)
-                    .right()
-                    .then(kenobi)
-                    .says(helloThere)
-                    .then(grievous)
-                    .says(generalKenobi)};
+                // clang-format off
+                danteo::DialogueBuilder::place(kenobi).left().andPlace(grievous).right()
+                    .then(kenobi).says(helloThere)
+                    .then(grievous).says(generalKenobi)
+                //clang-format on
+            };
 
             THEN("The dialogue page holds them all and in the correct order") {
-
                 CHECK(page.lines.size() == 2);
 
                 CHECK(page.lines[0].character == kenobi);

@@ -12,6 +12,8 @@ struct States {
     static constexpr engine::State titleScreen{"titleScreen"};
     static constexpr engine::State welcome{"welcome1"};
     static constexpr engine::State welcomeCont{"welcome2"};
+    static constexpr engine::State buzzwords{"what is it"};
+    static constexpr engine::State theClouds{"THE CLOUDS"};
     static constexpr engine::State exit{"EXIT"};
 };
 

@@ -28,7 +28,6 @@ FetchContent_Declare(ranges-v3
         GIT_TAG d800a032132512a54c291ce55a2a43e0460591c7)
 FetchContent_MakeAvailable(ranges-v3)
 
-
 # Note: by default ENABLE_DEVELOPER_MODE is True
 # This means that all analysis (sanitizers, static analysis)
 # is enabled and all warnings are treated as errors

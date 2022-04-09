@@ -1,3 +1,5 @@
+find_package(Microsoft.GSL REQUIRED)
+
 add_library(gameplay_impl STATIC
         main_loop.cpp
 
@@ -18,4 +20,5 @@ target_link_libraries(gameplay_impl
         gameplay_interfaces
         engine_impl
         user_interface_impl
+        Microsoft.GSL::GSL
         )

@@ -1,5 +1,6 @@
 find_package(Catch2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(Microsoft.GSL REQUIRED)
 
 include(CTest)
 include(Catch)

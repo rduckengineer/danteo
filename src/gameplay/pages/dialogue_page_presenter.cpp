@@ -5,9 +5,14 @@
 #include "range/v3/range/conversion.hpp"
 #include "warnings_ignore_pop.hpp"
 
+#include <gsl/span>
+
 namespace danteo {
 namespace {
-ftxui::Element printLine(DialogueLine const& line);
+ftxui::Element    printLine(DialogueLine const& line);
+ftxui::MenuOption verticalMenuAlignedRight(int&                               selection,
+                                           std::function<void(engine::Event)> handler,
+                                           gsl::span<engine::Event const>     events);
 } // namespace
 
 std::function<ftxui::Element()> staticPageFrom(DialoguePage const& page) {
@@ -36,14 +41,16 @@ ftxui::Component pageFrom(DialoguePageOnly const&            page,
 ftxui::Component pageFrom(DialoguePageWithChoice const&      page,
                           std::function<void(engine::Event)> eventHandler) {
     return [&page, eventHandler_ = std::move(eventHandler)]() mutable {
-        int  selection  = 0;
-        auto option     = ftxui::MenuOption::Vertical();
-        option.on_enter = [&page, &selection, handler = std::move(eventHandler_)] {
-            handler(page.nextEvents[static_cast<size_t>(selection)]);
-        };
-        return ftxui::Container::Vertical({ftxui::Renderer(staticPageFrom(page)),
-                                           ftxui::Menu(&page.choices, &selection, option)})
-             | ftxui::size(ftxui::WIDTH, ftxui::LESS_THAN, page.maxWidth) | ftxui::center;
+        int selection = 0;
+
+        auto menu = ftxui::Menu(
+            &page.choices, &selection,
+            verticalMenuAlignedRight(selection, std::move(eventHandler_), page.nextEvents));
+
+        return ftxui::Renderer(menu, [&] {
+            return ftxui::vbox({staticPageFrom(page)(), menu->Render()})
+                 | ftxui::size(ftxui::WIDTH, ftxui::LESS_THAN, page.maxWidth) | ftxui::center;
+        });
     }();
 }
 
@@ -52,18 +59,19 @@ auto characterName(Character const& character) {
     return ftxui::text(std::string{character.name}) | ftxui::bold;
 }
 auto lineAlignedLeft(DialogueLine const& leftLine) {
-    return ftxui::vbox(
-        {characterName(leftLine.character), ftxui::paragraphAlignLeft(std::string{leftLine.line})});
+    return ftxui::vbox({characterName(leftLine.character),
+                        ftxui::paragraphAlignLeft(std::string{leftLine.line}), ftxui::text(" ")});
 }
 
 auto lineAlignedRight(DialogueLine const& rightLine) {
     return ftxui::vbox({characterName(rightLine.character) | ftxui::align_right,
-                        ftxui::paragraphAlignRight(std::string{rightLine.line})});
+                        ftxui::paragraphAlignRight(std::string{rightLine.line}), ftxui::text(" ")});
 }
 
 auto lineAlignedCenter(DialogueLine const& centerLine) {
-    return ftxui::vbox({characterName(centerLine.character) | ftxui::center,
-                        ftxui::paragraphAlignCenter(std::string{centerLine.line})});
+    return ftxui::vbox(
+        {characterName(centerLine.character) | ftxui::center,
+         ftxui::paragraphAlignCenter(std::string{centerLine.line}), ftxui::text(" ")});
 }
 
 ftxui::Element printLine(const DialogueLine& line) {
@@ -73,6 +81,23 @@ ftxui::Element printLine(const DialogueLine& line) {
     case DialogueLine::Aligned::Left: [[fallthrough]];
     default: return lineAlignedLeft(line);
     }
+}
+
+ftxui::MenuOption verticalMenuAlignedRight(int&                               selection,
+                                           std::function<void(engine::Event)> handler,
+                                           gsl::span<engine::Event const>     events) {
+    auto option = ftxui::MenuOption::Vertical();
+
+    option.on_enter = [events, &selection, handler_ = std::move(handler)] {
+        handler_(events[static_cast<size_t>(selection)]);
+    };
+
+    option.entries.transform = [transform = std::move(option.entries.transform)](
+                                   ftxui::EntryState const& state) -> ftxui::Element {
+        return transform(state) | ftxui::align_right;
+    };
+
+    return option;
 }
 
 } // namespace
