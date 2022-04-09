@@ -1,15 +1,13 @@
 #include "gameplay/pages/title_page_presenter.hpp"
 
+#include "user_interface/color_ftxui.hpp"
+
 #include "ftxui/component/component.hpp"
 
 namespace danteo {
 namespace {
 ftxui::Dimensions toFTX(Size2D const& box) {
     return {.dimx = static_cast<int>(box.width), .dimy = static_cast<int>(box.height)};
-}
-
-ftxui::Color toFTX(HSV color) {
-    return ftxui::Color::HSV(color.hue, color.saturation, color.value);
 }
 }; // namespace
 
@@ -21,10 +19,11 @@ ftxui::Element present(TitlePage const& titlePage) {
         return size(WIDTH, EQUAL, dim.dimx) | size(HEIGHT, EQUAL, dim.dimy);
     };
 
-    auto mainBox = flex(text(std::string{titlePage.title}) | bold | center)
-                 | boxSize(titlePage.box_size) | bgcolor(toFTX(titlePage.box_color)) | border;
+    auto mainBox
+        = flex(text(std::string{titlePage.title}) | bold | center) | boxSize(titlePage.box_size)
+        | bgcolor(convert::toFTX(titlePage.box_color)) | border;
 
-    return center(std::move(mainBox)) | bgcolor(toFTX(titlePage.page_color));
+    return center(std::move(mainBox)) | bgcolor(convert::toFTX(titlePage.page_color));
 }
 
 ftxui::Component pageFrom(TitlePage const&                           titlePage,

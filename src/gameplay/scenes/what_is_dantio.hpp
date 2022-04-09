@@ -33,8 +33,12 @@ struct CorridorEvents {
 
 constexpr engine::State secondSceneStart = CorridorStates::corridorScene;
 
-void addSecondScene(engine::StateGraph::Builder& builder, engine::State nextSceneStartState,
-                    engine::State restart);
+struct SecondSceneExits {
+    engine::State nextScene;
+    engine::State restart;
+};
+
+void addSecondScene(engine::StateGraph::Builder& builder, SecondSceneExits const& exits);
 
 void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState);
 } // namespace danteo::scenes

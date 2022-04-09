@@ -1,5 +1,7 @@
 #include "gameplay/pages/dialogue_page_presenter.hpp"
 
+#include "user_interface/color_ftxui.hpp"
+
 #include "warnings_ignore_push.hpp"
 #include "range/v3/view/transform.hpp"
 #include "range/v3/range/conversion.hpp"
@@ -43,11 +45,10 @@ ftxui::Component pageFrom(DialoguePageWithChoice const&      page,
     return [&page, eventHandler_ = std::move(eventHandler)]() mutable {
         int selection = 0;
 
-        auto option = verticalMenuAlignedRight(selection, std::move(eventHandler_), page.nextEvents);
+        auto option
+            = verticalMenuAlignedRight(selection, std::move(eventHandler_), page.nextEvents);
 
-        auto menu = ftxui::Menu(
-            &page.choices, &selection,
-            option);
+        auto menu = ftxui::Menu(&page.choices, &selection, option);
 
         return ftxui::Renderer(menu, [&] {
             return ftxui::vbox({staticPageFrom(page)(), menu->Render()})
@@ -58,21 +59,27 @@ ftxui::Component pageFrom(DialoguePageWithChoice const&      page,
 
 namespace {
 auto characterName(Character const& character) {
-    return ftxui::text(std::string{character.name}) | ftxui::bold;
+    return ftxui::text(std::string{character.name}) | ftxui::color(convert::toFTX(character.color))
+         | ftxui::bold;
 }
 auto lineAlignedLeft(DialogueLine const& leftLine) {
     return ftxui::vbox({characterName(leftLine.character),
-                        ftxui::paragraphAlignLeft(std::string{leftLine.line}), ftxui::text(" ")});
+                        ftxui::paragraphAlignLeft(std::string{leftLine.line})
+                            | ftxui::color(convert::toFTX(leftLine.character.color)),
+                        ftxui::text(" ")});
 }
 
 auto lineAlignedRight(DialogueLine const& rightLine) {
     return ftxui::vbox({characterName(rightLine.character) | ftxui::align_right,
-                        ftxui::paragraphAlignRight(std::string{rightLine.line}), ftxui::text(" ")});
+                        ftxui::paragraphAlignRight(std::string{rightLine.line})
+                            | ftxui::color(convert::toFTX(rightLine.character.color)),
+                        ftxui::text(" ")});
 }
 
 auto lineAlignedCenter(DialogueLine const& centerLine) {
     return ftxui::vbox(
-        {characterName(centerLine.character) | ftxui::center,
+        {characterName(centerLine.character)
+             | ftxui::color(convert::toFTX(centerLine.character.color)) | ftxui::center,
          ftxui::paragraphAlignCenter(std::string{centerLine.line}), ftxui::text(" ")});
 }
 

@@ -1,6 +1,7 @@
 add_library(user_interface_core INTERFACE
         size_2d.hpp
         color.hpp
+        color_ftxui.hpp
         )
 
 target_include_directories(user_interface_core INTERFACE ${DANTEO_INCLUDE_PATH})

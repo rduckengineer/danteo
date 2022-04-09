@@ -2,6 +2,9 @@
 #define DANTEO_DIALOGUE_PAGE_HPP
 
 #include "engine/event.hpp"
+
+#include "user_interface/color.hpp"
+
 #include <string_view>
 #include <vector>
 #include <string>
@@ -11,8 +14,11 @@
 namespace danteo {
 struct Character {
     std::string_view name;
+    Color            color;
 
-    [[nodiscard]] constexpr bool operator==(Character const&) const = default;
+    [[nodiscard]] constexpr bool operator==(Character const& other) const {
+        return name == other.name;
+    }
 };
 } // namespace danteo
 

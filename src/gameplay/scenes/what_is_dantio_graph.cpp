@@ -4,8 +4,8 @@
 
 namespace danteo {
 // cppcheck-suppress[constParameter]
-void scenes::addSecondScene(engine::StateGraph::Builder& builder, engine::State nextSceneStartState,
-                            engine::State restart) {
+// NOLINTNEXTLINE
+void scenes::addSecondScene(engine::StateGraph::Builder& builder, SecondSceneExits const& exits) {
 
     builder / CorridorStates::corridorScene + Events::next = CorridorStates::discussion;
     builder / CorridorStates::discussion + Events::next    = CorridorStates::buzzwords;
@@ -23,9 +23,9 @@ void scenes::addSecondScene(engine::StateGraph::Builder& builder, engine::State 
     builder / CorridorStates::programmerPain + CorridorEvents::evil   = CorridorStates::letsGoNay;
     builder / CorridorStates::programmerPain + Events::fakeRespawn    = CorridorStates::imOut;
 
-    builder / CorridorStates::letsGoYay + Events::next = nextSceneStartState;
-    builder / CorridorStates::letsGoNay + Events::next = nextSceneStartState;
+    builder / CorridorStates::letsGoYay + Events::next = exits.nextScene;
+    builder / CorridorStates::letsGoNay + Events::next = exits.nextScene;
 
-    builder / CorridorStates::imOut + Events::next = restart;
+    builder / CorridorStates::imOut + Events::next = exits.restart;
 }
 } // namespace danteo

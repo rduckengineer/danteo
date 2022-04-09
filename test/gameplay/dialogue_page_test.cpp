@@ -7,7 +7,7 @@ using namespace std::string_view_literals;
 // NOLINTNEXTLINE[readability-function-cognitive-complexity]
 SCENARIO("A DialogueLine describes one line of dialogue") {
     GIVEN("A character") {
-        static constexpr danteo::Character kenobi{"General Kenobi"sv};
+        static constexpr danteo::Character kenobi{"General Kenobi"sv, danteo::HSV{0, 0, 255}};
 
         THEN("The character has the correct name") {
             STATIC_REQUIRE(kenobi.name == "General Kenobi"sv);
@@ -32,8 +32,8 @@ SCENARIO("A DialogueLine describes one line of dialogue") {
 // NOLINTNEXTLINE[readability-function-cognitive-complexity]
 SCENARIO("A DialoguePage defines a sequence of lines of dialogue") {
     GIVEN("Two characters") {
-        static constexpr danteo::Character kenobi{"General Kenobi"sv};
-        static constexpr danteo::Character grievous{"General Grievous"sv};
+        static constexpr danteo::Character kenobi{"General Kenobi"sv, danteo::RGB{0, 0, 255}};
+        static constexpr danteo::Character grievous{"General Grievous"sv, danteo::RGB{255, 0, 0}};
 
         AND_GIVEN("Their dialogue lines") {
             std::string const helloThere    = "Hello there.";
