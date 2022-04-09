@@ -35,8 +35,7 @@ void operator<<(MapInserter&& lhs, PageT&& rhs) {
 } // namespace
 
 void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
-    pagesPerState << CorridorStates::corridorScene
-                  << SceneChangePage{"In the corridor", Events::next};
+    pagesPerState << CorridorStates::corridorScene << SceneChangePage{"Corridor", Events::next};
     pagesPerState << CorridorStates::discussion << makeDiscussion();
     pagesPerState << CorridorStates::buzzwords << makeBuzzwords();
     pagesPerState << CorridorStates::theClouds << makeTheClouds();

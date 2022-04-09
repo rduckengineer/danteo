@@ -10,18 +10,29 @@
 
 namespace danteo::scenes {
 
-constexpr engine::State firstSceneStartState = States::welcome;
+struct WelcomeScene {
+    static constexpr engine::State welcomeScene{"welcome to DantIO"};
+    static constexpr engine::State welcome{"welcome1"};
+    static constexpr engine::State welcomeCont{"welcome2"};
+};
+
+constexpr engine::State firstSceneStartState = WelcomeScene::welcomeScene;
 
 void addFirstScene(engine::StateGraph::Builder& builder, // cppcheck-suppress[constParameter]
                    engine::State                nextSceneStartState) {
-    builder / States::welcome + Events::next     = States::welcomeCont;
-    builder / States::welcomeCont + Events::next = nextSceneStartState;
+    builder / WelcomeScene::welcomeScene + Events::next = WelcomeScene::welcome;
+    builder / WelcomeScene::welcome + Events::next      = WelcomeScene::welcomeCont;
+    builder / WelcomeScene::welcomeCont + Events::next  = nextSceneStartState;
 }
 
 void addFirstScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
     using namespace danteo::characters;
+
     pagesPerState.try_emplace(
-        States::welcome,
+        WelcomeScene::welcomeScene, SceneChangePage{"The Welcome Office", Events::next});
+
+    pagesPerState.try_emplace(
+        WelcomeScene::welcome,
         DialoguePageWithChoice{
             {DialogueBuilder::place(Virgil).left().then(Virgil).says(
                 "Welcome to DantIO! We're always excited to have new recruits! I'm sure you have "
@@ -30,7 +41,7 @@ void addFirstScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
             std::vector<engine::Event>{Events::next, Events::next, Events::next}});
 
     pagesPerState.try_emplace(
-        States::welcomeCont,
+        WelcomeScene::welcomeCont,
         DialoguePageOnly{
             {DialogueBuilder::place(You)
                  .right()

@@ -10,8 +10,6 @@ namespace danteo {
 
 struct States {
     static constexpr engine::State titleScreen{"titleScreen"};
-    static constexpr engine::State welcome{"welcome1"};
-    static constexpr engine::State welcomeCont{"welcome2"};
     static constexpr engine::State exit{"EXIT"};
 };
 
