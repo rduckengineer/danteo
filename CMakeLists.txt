@@ -117,8 +117,7 @@ dynamic_project_options(
         # GCC_WARNINGS     # Override the defaults for the GCC warnings
         CPPCHECK_OPTIONS
         -iftxui/* # We don't want to check FTXUI's code :)))
-        -irange/v3/* # same for Rang-V3
-        --suppress=preprocessorErrorDirective # for Range-V3
+        --suppress=*:*/ranges-v3-src/* # Only way to be able to use Ranges-V3 with CppCheck it seems
 )
 
 target_compile_features(project_options INTERFACE cxx_std_${CMAKE_CXX_STANDARD})
