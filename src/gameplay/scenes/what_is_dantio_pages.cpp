@@ -26,9 +26,10 @@ MapInserter operator<<(std::map<engine::State, DanteoPageRequest>& lhs, engine::
 }
 
 template <typename PageT>
-    requires std::is_constructible_v<DanteoPageRequest, PageT>
+    requires(
+        std::is_constructible_v<DanteoPageRequest, PageT> && !std::is_lvalue_reference_v<PageT>)
 void operator<<(MapInserter&& lhs, PageT&& rhs) {
-    lhs.mapToUpdate.try_emplace(lhs.state, std::move(rhs));
+    lhs.mapToUpdate.try_emplace(lhs.state, std::move(rhs)); // NOLINT intended move
 }
 } // namespace
 
