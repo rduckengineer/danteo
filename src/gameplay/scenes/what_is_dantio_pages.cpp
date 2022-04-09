@@ -15,6 +15,7 @@ DialoguePageWithChoice makeTheClouds();
 DialoguePageOnly       buildHeavenHellOrTheClouds(std::string_view chosenResponse);
 DialoguePageWithChoice makeProgrammerPain();
 DialoguePageOnly       buildThatsEvilOrGenius(std::string_view chosenResponse);
+DialoguePageOnly       makeImOutOfHere();
 
 struct MapInserter {
     std::map<engine::State, DanteoPageRequest>& mapToUpdate;
@@ -34,7 +35,8 @@ void operator<<(MapInserter&& lhs, PageT&& rhs) {
 } // namespace
 
 void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
-    pagesPerState << States::corridorScene << SceneChangePage{"In the corridor", Events::next};
+    pagesPerState << CorridorStates::corridorScene
+                  << SceneChangePage{"In the corridor", Events::next};
     pagesPerState << CorridorStates::discussion << makeDiscussion();
     pagesPerState << CorridorStates::buzzwords << makeBuzzwords();
     pagesPerState << CorridorStates::theClouds << makeTheClouds();
@@ -48,6 +50,7 @@ void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
                   << buildThatsEvilOrGenius("That's genius! Where do I sign?");
     pagesPerState << CorridorStates::letsGoNay
                   << buildThatsEvilOrGenius("That's evil! I didn't sign up for this!");
+    pagesPerState << CorridorStates::imOut << makeImOutOfHere();
 }
 
 namespace {
@@ -58,7 +61,7 @@ DialoguePageWithChoice makeDiscussion() {
              .andPlace(BitterSenior).right()
              // clang-format on
              .then(PM)
-             .says(fmt::format("Look, {}, the KPIs still aren't good enough for the release "
+             .says(fmt::format("Look, {}, the KPIs still aren't good enough for the release so "
                                "far. I know you all have been working very hard on it, but is "
                                "there anything more we can do to meet the deadline?",
                                BitterSenior))
@@ -92,14 +95,13 @@ DialoguePageWithChoice makeBuzzwords() {
 
              .then(You).says("What is this place?")
 
-             .then(BitterSenior).says("Hell.")
+             .then(BitterSenior).says("The 10th circle of Hell.")
 
              .then(PM)
              .says(fmt::format(
                  "Very productive, {}. DantIO is a cutting-edge platform for optimizing "
-                 "crowd-sourced energy "
-                 "production. We want to disrupt the market by leveraging the Clouds "
-                 "infrastructure-",
+                 "crowd-sourced energy production. We want to disrupt the market by leveraging "
+                 "this new infrastructure in the Clouds-",
                  BitterSenior))
             // clang-format on
         },
@@ -174,11 +176,11 @@ DialoguePageWithChoice makeProgrammerPain() {
 
              .then(PM)
              .says("Fortunately, with the ever-increasing need for automation, there is an "
-                   "exponential growth of software out there.")
+                   "exponential growth of software and inexperienced developers out there.")
 
              .then(BitterSenior)
-             .says("Our job -our MISSION!- is to make software rot and to ensure that juniors "
-                   "stay away from good practices.")},
+             .says("Our mission is to make software rot and to ensure that juniors "
+                   "stay far away from good practices.")},
         std::vector<std::string>{"That's evil!", "That's genius!", "I'm out of here!"},
         std::vector<engine::Event>{
             CorridorEvents::evil, CorridorEvents::genius, Events::fakeRespawn}};
@@ -199,6 +201,20 @@ DialoguePageOnly buildThatsEvilOrGenius(std::string_view chosen) {
                  .then(PM)
                  .says("Which means you two can get back to it, we really need to hit those "
                        "deadlines!")},
+            Events::next};
+}
+
+DialoguePageOnly makeImOutOfHere() {
+    return {{DialogueBuilder::place(PM)
+                 .left()
+                 .andPlace(You)
+                 .right()
+
+                 .then(You)
+                 .says("You're insane! I'm out of here!")
+
+                 .then(PM)
+                 .says("Suit yourself. The exit is right through this door.")},
             Events::next};
 }
 } // namespace

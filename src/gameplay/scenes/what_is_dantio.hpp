@@ -9,6 +9,7 @@
 namespace danteo::scenes {
 
 struct CorridorStates {
+    static constexpr engine::State corridorScene{"Corridor"};
     static constexpr engine::State discussion{"Corridor discussion"};
     static constexpr engine::State buzzwords{"what is it"};
     static constexpr engine::State theClouds{"THE CLOUDS"};
@@ -18,6 +19,7 @@ struct CorridorStates {
     static constexpr engine::State programmerPain{"My eyes..."};
     static constexpr engine::State letsGoYay{"Let's get started!"};
     static constexpr engine::State letsGoNay{"Let's get started..."};
+    static constexpr engine::State imOut{"I'm out"};
 };
 
 struct CorridorEvents {
@@ -29,9 +31,10 @@ struct CorridorEvents {
     static constexpr engine::Event evil{"</3"};
 };
 
-constexpr engine::State secondSceneStart = States::corridorScene;
+constexpr engine::State secondSceneStart = CorridorStates::corridorScene;
 
-void addSecondScene(engine::StateGraph::Builder& builder, engine::State nextSceneStartState);
+void addSecondScene(engine::StateGraph::Builder& builder, engine::State nextSceneStartState,
+                    engine::State restart);
 
 void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState);
 } // namespace danteo::scenes

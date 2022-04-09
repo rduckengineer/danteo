@@ -41,7 +41,7 @@ void addFirstScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
                  .says("Wh-")
 
                  .then(Virgil)
-                 .says("No time for that! The prod is on fire -literally- so it's a "
+                 .says("No time, I said! The prod is on fire -literally- so it's a "
                        "all-hands-or-hooves on deck situation.")
 
                  .then(Virgil)

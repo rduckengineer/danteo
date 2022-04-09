@@ -4,12 +4,12 @@
 
 namespace danteo {
 // cppcheck-suppress[constParameter]
-void scenes::addSecondScene(engine::StateGraph::Builder& builder,
-                            engine::State                nextSceneStartState) {
+void scenes::addSecondScene(engine::StateGraph::Builder& builder, engine::State nextSceneStartState,
+                            engine::State restart) {
 
-    builder / States::corridorScene + Events::next      = CorridorStates::discussion;
-    builder / CorridorStates::discussion + Events::next = CorridorStates::buzzwords;
-    builder / CorridorStates::buzzwords + Events::next  = CorridorStates::theClouds;
+    builder / CorridorStates::corridorScene + Events::next = CorridorStates::discussion;
+    builder / CorridorStates::discussion + Events::next    = CorridorStates::buzzwords;
+    builder / CorridorStates::buzzwords + Events::next     = CorridorStates::theClouds;
 
     builder / CorridorStates::theClouds + CorridorEvents::HELL   = CorridorStates::hell;
     builder / CorridorStates::theClouds + CorridorEvents::HEAVEN = CorridorStates::heaven;
@@ -21,9 +21,11 @@ void scenes::addSecondScene(engine::StateGraph::Builder& builder,
 
     builder / CorridorStates::programmerPain + CorridorEvents::genius = CorridorStates::letsGoYay;
     builder / CorridorStates::programmerPain + CorridorEvents::evil   = CorridorStates::letsGoNay;
-    builder / CorridorStates::programmerPain + Events::fakeRespawn    = nextSceneStartState;
+    builder / CorridorStates::programmerPain + Events::fakeRespawn    = CorridorStates::imOut;
 
     builder / CorridorStates::letsGoYay + Events::next = nextSceneStartState;
     builder / CorridorStates::letsGoNay + Events::next = nextSceneStartState;
+
+    builder / CorridorStates::imOut + Events::next = restart;
 }
 } // namespace danteo

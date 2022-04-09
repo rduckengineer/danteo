@@ -13,7 +13,7 @@ engine::StateGraph gameStateGraph() {
 
     builder / States::titleScreen + Events::next = scenes::firstSceneStartState;
     scenes::addFirstScene(builder, scenes::secondSceneStart);
-    scenes::addSecondScene(builder, States::exit);
+    scenes::addSecondScene(builder, States::exit, scenes::firstSceneStartState);
 
     return std::move(builder).build();
 }
