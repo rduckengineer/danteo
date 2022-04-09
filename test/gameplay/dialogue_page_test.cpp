@@ -14,16 +14,16 @@ SCENARIO("A DialogueLine describes one line of dialogue") {
         }
 
         AND_GIVEN("Some text and its alignment") {
-            static constexpr auto line = "Hello there."sv;
+            std::string           line{"Hello there."};
             static constexpr auto aligned{danteo::DialogueLine::Aligned::Left};
 
             THEN("The DialogueLine contains all three") {
-                static constexpr danteo::DialogueLine dialogueLine{
+                danteo::DialogueLine const dialogueLine{
                     .character = kenobi, .line = line, .aligned = aligned};
 
-                STATIC_REQUIRE(dialogueLine.character == kenobi);
-                STATIC_REQUIRE(dialogueLine.line == line);
-                STATIC_REQUIRE(dialogueLine.aligned == aligned);
+                CHECK(dialogueLine.character == kenobi);
+                CHECK(dialogueLine.line == line);
+                CHECK(dialogueLine.aligned == aligned);
             }
         }
     }
@@ -36,8 +36,8 @@ SCENARIO("A DialoguePage defines a sequence of lines of dialogue") {
         static constexpr danteo::Character grievous{"General Grievous"sv};
 
         AND_GIVEN("Their dialogue lines") {
-            static constexpr auto helloThere    = "Hello there."sv;
-            static constexpr auto generalKenobi = "General Kenobi!"sv;
+            std::string const helloThere    = "Hello there.";
+            std::string const generalKenobi = "General Kenobi!";
 
             danteo::DialoguePage page{
                 // clang-format off

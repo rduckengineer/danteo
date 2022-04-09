@@ -9,6 +9,8 @@ add_library(gameplay_impl STATIC
         pages/title_page_presenter.cpp
         pages/dialogue_page_presenter.cpp
         pages/scene_change_page_presenter.cpp
+
+        scenes/ceo_scene.hpp
         )
 
 target_link_libraries(gameplay_impl

@@ -6,12 +6,35 @@
 #include <vector>
 #include <string>
 
+#include <fmt/format.h>
+
 namespace danteo {
 struct Character {
     std::string_view name;
 
     [[nodiscard]] constexpr bool operator==(Character const&) const = default;
 };
+} // namespace danteo
+
+template <>
+struct fmt::formatter<danteo::Character> {
+    // cppcheck-suppress[functionStatic]
+    constexpr auto parse(fmt::format_parse_context& context) {
+        auto ctxIt = context.begin();
+        while (ctxIt != context.end() && *ctxIt != '}')
+            ;
+        return ctxIt;
+    }
+
+    template <typename FormatContext>
+    // cppcheck-suppress[functionStatic]
+    auto format(danteo::Character const& character, FormatContext& context)
+        -> decltype(context.out()) {
+        return fmt::format_to(context.out(), "{:}", character.name);
+    }
+};
+
+namespace danteo {
 
 struct DialogueLine {
     enum class Aligned {
@@ -20,11 +43,11 @@ struct DialogueLine {
         Center
     };
 
-    Character        character;
-    std::string_view line;
-    Aligned          aligned;
+    Character   character;
+    std::string line;
+    Aligned     aligned;
 
-    [[nodiscard]] constexpr bool operator==(DialogueLine const&) const = default;
+    [[nodiscard]] bool operator==(DialogueLine const&) const = default;
 };
 
 struct DialoguePage {

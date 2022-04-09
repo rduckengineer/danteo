@@ -56,7 +56,7 @@ struct DialogueBuilder::LineBuilder {
         : parent_{std::move(parent)}
         , character_{character} {}
 
-    DialogueBuilder says(std::string_view line) &&;
+    DialogueBuilder says(std::string line) &&;
 
 private:
     DialogueBuilder  parent_;
@@ -75,9 +75,9 @@ DialogueBuilder::LineBuilder DialogueBuilder::then(const Character& character) &
     return {std::move(*this), character};
 }
 
-DialogueBuilder DialogueBuilder::LineBuilder::says(std::string_view line) && {
+DialogueBuilder DialogueBuilder::LineBuilder::says(std::string line) && {
     parent_.page_.lines.push_back(
-        DialogueLine{character_, line, parent_.characterSide(character_)});
+        DialogueLine{character_, std::move(line), parent_.characterSide(character_)});
     return std::move(parent_);
 }
 
@@ -87,7 +87,7 @@ DialogueLine::Aligned DialogueBuilder::characterSide(const Character& character)
     });
 
     if (alignmentIt == characterPlacement_.end()) {
-        throw std::logic_error("This character ({}) should have a side!");
+        throw std::logic_error(fmt::format("This character ({}) should have a side!", character));
     }
 
     return alignmentIt->second;

@@ -4,7 +4,7 @@
 #include "engine/state_graph.hpp"
 #include "engine/state_to_page_request_map.hpp"
 
-#include "danteo_page_request.hpp"
+#include "gameplay/danteo_page_request.hpp"
 
 namespace danteo {
 
@@ -13,13 +13,12 @@ struct States {
     static constexpr engine::State welcome{"welcome1"};
     static constexpr engine::State welcomeCont{"welcome2"};
     static constexpr engine::State corridorScene{"Corridor"};
-    static constexpr engine::State buzzwords{"what is it"};
-    static constexpr engine::State theClouds{"THE CLOUDS"};
     static constexpr engine::State exit{"EXIT"};
 };
 
 struct Events {
     static constexpr engine::Event next{"next"};
+    static constexpr engine::Event fakeRespawn{"fakeRespawn"};
 };
 
 engine::StateGraph gameStateGraph();
