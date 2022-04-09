@@ -1,10 +1,16 @@
 #include "gameplay/danteo_state_graph.hpp"
 
 #include "engine/state_graph_builder.hpp"
-
-#include <string>
+#include "gameplay/pages/dialogue_page_builder.hpp"
 
 namespace danteo {
+namespace {
+constexpr auto kenobi   = Character{"Kenobi"};
+constexpr auto grievous = Character{"Grievous"};
+constexpr auto gerald   = Character{"Gerald"};
+constexpr auto yennefer = Character{"Yennefer"};
+} // namespace
+
 engine::StateGraph gameStateGraph() {
     engine::StateGraph::Builder builder{};
 
@@ -14,6 +20,7 @@ engine::StateGraph gameStateGraph() {
 
     return std::move(builder).build();
 }
+
 engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
     std::map<engine::State, DanteoPageRequest> pagesPerState{};
 
@@ -28,24 +35,29 @@ engine::StateToPageRequestMap<DanteoPageRequest> pagePerState() {
     pagesPerState.try_emplace(
         States::secondPage,
         DialoguePageWithChoice{
-            {Events::next,
-             std::vector{
-                 DialogueLine{.character = Character{"Kenobi"},
-                              .line      = "Hello there.",
-                              .aligned   = DialogueLine::Aligned::Left},
-                 DialogueLine{.character = Character{"Grievous"},
-                              .line      = "General Kenobi!",
-                              .aligned   = DialogueLine::Aligned::Right},
-             }},
-            std::vector<std::string>{"*laugh maniacally*", "*flex your 4 lightsabers*"}});
+            {
+                // clang-format off
+                DialogueBuilder::place(kenobi).left()
+                 .andPlace(grievous).right()
+                 .then(kenobi).says("Hello there.")
+                 .then(grievous).says("General Kenobi!")
+                // clang-format on
+            },
+            std::vector<std::string>{"*laugh maniacally*", "*flex your 4 lightsabers*"},
+            std::vector<engine::Event>{Events::next, Events::next}});
 
     pagesPerState.try_emplace(
         States::dialoguePage,
-        DialoguePage{
-            Events::next,
-            std::vector{
-                DialogueLine{Character{"Gerald"}, "Hello Yenifer.", DialogueLine::Aligned::Left},
-                DialogueLine{Character{"Yen"}, "Hello wolf", DialogueLine::Aligned::Right}}});
+        DialoguePageOnly{
+            {
+                // clang-format off
+                DialogueBuilder::place(gerald).left()
+                 .andPlace(yennefer).right()
+                 .then(gerald).says("Hello Yen.")
+                 .then(yennefer).says("Hello wolf.")
+                // clang-format on
+            },
+            Events::next});
 
     return engine::StateToPageRequestMap{std::move(pagesPerState)};
 }

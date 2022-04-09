@@ -9,7 +9,7 @@
 
 namespace danteo {
 using DanteoPageRequest
-    = engine::PageRequest<PlainTextPage, TitlePage, DialoguePage, DialoguePageWithChoice>;
+    = engine::PageRequest<PlainTextPage, TitlePage, DialoguePageOnly, DialoguePageWithChoice>;
 
 static_assert(std::is_nothrow_move_constructible_v<DanteoPageRequest>,
               "New pages should be noexcept on move construction!");

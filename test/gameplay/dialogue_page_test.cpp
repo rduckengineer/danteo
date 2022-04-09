@@ -1,4 +1,4 @@
-#include "gameplay/pages/dialogue_page.hpp"
+#include "gameplay/pages/dialogue_page_builder.hpp"
 
 #include <catch2/catch.hpp>
 
@@ -36,24 +36,29 @@ SCENARIO("A DialoguePage defines a sequence of lines of dialogue") {
         static constexpr danteo::Character grievous{"General Grievous"sv};
 
         AND_GIVEN("Their dialogue lines") {
-            using danteo::DialogueLine;
-            static constexpr DialogueLine line1{
-                kenobi, "Hello there."sv, DialogueLine::Aligned::Left};
-            static constexpr danteo::DialogueLine line2{
-                grievous, "General Kenobi!"sv, DialogueLine::Aligned::Right};
+            static constexpr auto helloThere    = "Hello there."sv;
+            static constexpr auto generalKenobi = "General Kenobi!"sv;
 
-            AND_GIVEN("The next event") {
-                static constexpr danteo::engine::Event event{"Next"sv};
+            danteo::DialoguePage page{
+                danteo::DialogueBuilder::place(kenobi)
+                    .left()
+                    .andPlace(grievous)
+                    .right()
+                    .then(kenobi)
+                    .says(helloThere)
+                    .then(grievous)
+                    .says(generalKenobi)};
 
-                danteo::DialoguePage page{event, std::vector{line1, line2}};
+            THEN("The dialogue page holds them all and in the correct order") {
 
-                THEN("The dialogue page holds them in the correct order") {
-                    CHECK(page.lines.size() == 2);
-                    CHECK(page.lines[0] == line1);
-                    CHECK(page.lines[1] == line2);
-                }
+                CHECK(page.lines.size() == 2);
 
-                THEN("The next event is the correct one") { CHECK(page.nextEvent == event); }
+                CHECK(page.lines[0].character == kenobi);
+                CHECK(page.lines[0].line == helloThere);
+                CHECK(page.lines[0].aligned == danteo::DialogueLine::Aligned::Left);
+                CHECK(page.lines[1].character == grievous);
+                CHECK(page.lines[1].line == generalKenobi);
+                CHECK(page.lines[1].aligned == danteo::DialogueLine::Aligned::Right);
             }
         }
     }

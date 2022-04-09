@@ -11,6 +11,7 @@ add_library(gameplay_interfaces INTERFACE
         pages/plain_text_page.hpp
         pages/plain_text_page_presenter.hpp
         pages/dialogue_page.hpp
+        pages/dialogue_page_builder.hpp
         pages/dialogue_page_presenter.hpp
         )
 
@@ -18,5 +19,6 @@ target_link_libraries(gameplay_interfaces INTERFACE
         engine_interface
         user_interface_core
         ftxui::component
+        range-v3::range-v3
         )
 target_include_directories(gameplay_interfaces INTERFACE ${DANTEO_INCLUDE_PATH})

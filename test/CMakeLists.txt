@@ -34,6 +34,7 @@ target_link_libraries(tests
         Catch2::Catch2
         project_warnings
         project_options
+        fmt::fmt
         user_interface_tests
         engine_constexpr_tests
         gameplay_tests)

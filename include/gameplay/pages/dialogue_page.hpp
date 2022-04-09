@@ -4,6 +4,7 @@
 #include "engine/event.hpp"
 #include <string_view>
 #include <vector>
+#include <string>
 
 namespace danteo {
 struct Character {
@@ -27,15 +28,23 @@ struct DialogueLine {
 };
 
 struct DialoguePage {
-    danteo::engine::Event     nextEvent;
+    static constexpr int defaultMaxWidth = 60;
+
+    DialoguePage()               = default;
+    DialoguePage(DialoguePage&&) = default;
+
     std::vector<DialogueLine> lines;
-    int                       maxWidth = 60;
+    int                       maxWidth = defaultMaxWidth;
+};
+
+struct DialoguePageOnly : DialoguePage {
+    engine::Event nextEvent;
 };
 
 struct DialoguePageWithChoice : DialoguePage {
-    std::vector<std::string> choices;
+    std::vector<std::string>   choices;
+    std::vector<engine::Event> nextEvents;
 };
-
 } // namespace danteo
 
 #endif // DANTEO_DIALOGUE_PAGE_HPP
