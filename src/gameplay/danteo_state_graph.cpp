@@ -26,28 +26,47 @@ void addScenesToGraph(DanteoStateToPageMap::Builder& builder, SceneT const&... s
 
 engine::PageNavigation<DanteoPageRequest> gameNavigation() {
     static constexpr engine::State gameStart = States::titleScreen;
-    // static constexpr engine::State gameStart = scenes::OfficeScene::startState;
+    static constexpr engine::State gameEnd   = States::outro;
+
+    static constexpr auto   title = "DantIO";
+    static constexpr Size2D titleBoxSize{Width{50U}, Height{10U}};
+    static constexpr HSV    titleBoxColor{HSV{250, 255, 50}};
+    static constexpr HSV    titlePageColor{HSV{0, 0, 10}};
 
     scenes::WelcomeScene const  welcomeScene{.nextScene = scenes::CorridorScene::startState};
     scenes::CorridorScene const corridorScene{{.nextScene = scenes::OfficeScene::startState,
                                                .restart   = scenes::WelcomeScene::startState}};
     scenes::OfficeScene const   officeScene{.nextScene = scenes::RebootScene::startState};
-    scenes::RebootScene const   rebootScene{.nextScene = States::exit};
+    scenes::RebootScene const   rebootScene{.nextScene = gameEnd};
 
-    engine::StateGraph::Builder graphBuilder{};
-    graphBuilder / States::titleScreen + Events::next = scenes::WelcomeScene::startState;
-    addScenesToGraph(graphBuilder, welcomeScene, corridorScene, officeScene, rebootScene);
+    auto graph = [&] {
+        engine::StateGraph::Builder graphBuilder{};
+        graphBuilder / States::titleScreen + Events::next = scenes::WelcomeScene::startState;
+        graphBuilder / States::outro + Events::next       = States::exit;
+        addScenesToGraph(graphBuilder, welcomeScene, corridorScene, officeScene, rebootScene);
+        return graphBuilder;
+    }();
 
-    DanteoStateToPageMap::Builder pagesPerState{};
-    pagesPerState << States::titleScreen
-                  << TitlePage{.title      = "DantIO",
-                               .box_size   = {Width{50U}, Height{10U}}, // NOLINT
-                               .box_color  = HSV{0, 255, 30},           // NOLINT
-                               .page_color = HSV{0, 0, 10},             // NOLINT
-                               .next_event = Events::next};
-    addScenesToGraph(pagesPerState, welcomeScene, corridorScene, officeScene, rebootScene);
+    auto pageMap = [&] {
+        DanteoStateToPageMap::Builder pagesPerState{};
 
-    return engine::PageNavigation{engine::StateMachine{std::move(graphBuilder).build(), gameStart},
-                                  std::move(pagesPerState).build()};
+        auto makeTitle = [&] {
+            return TitlePage{.title      = title,
+                             .box_size   = titleBoxSize,
+                             .box_color  = titleBoxColor,
+                             .page_color = titlePageColor,
+                             .next_event = Events::next};
+        };
+
+        pagesPerState << States::titleScreen << makeTitle();
+
+        pagesPerState << States::outro << makeTitle();
+
+        addScenesToGraph(pagesPerState, welcomeScene, corridorScene, officeScene, rebootScene);
+        return pagesPerState;
+    }();
+
+    return engine::PageNavigation{
+        engine::StateMachine{std::move(graph).build(), gameStart}, std::move(pageMap).build()};
 }
 } // namespace danteo

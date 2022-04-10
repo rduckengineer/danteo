@@ -2,7 +2,7 @@
 
 #include "user_interface/color_ftxui.hpp"
 
-#include "ftxui/component/component.hpp"
+#include "ftxui/component/animation.hpp"
 
 namespace danteo {
 namespace {
@@ -11,34 +11,58 @@ ftxui::Dimensions toFTX(Size2D const& box) {
 }
 }; // namespace
 
-ftxui::Element present(TitlePage const& titlePage) {
-    using namespace ftxui;
+class TitlePagePresenter : public ftxui::ComponentBase {
+public:
+    TitlePagePresenter(TitlePage const& page, std::function<void(engine::Event)> eventHandler)
+        : eventHandler_{std::move(eventHandler)}
+        , page_{page} {}
 
-    auto boxSize = [](Size2D size2D) {
-        auto const dim = toFTX(size2D);
-        return size(WIDTH, EQUAL, dim.dimx) | size(HEIGHT, EQUAL, dim.dimy);
-    };
+    ftxui::Element Render() override {
+        using namespace ftxui;
 
-    auto mainBox
-        = flex(text(std::string{titlePage.title}) | bold | center) | boxSize(titlePage.box_size)
-        | bgcolor(convert::toFTX(titlePage.box_color)) | border;
+        auto boxSize = [](Size2D size2D) {
+            auto const dim = toFTX(size2D);
+            return size(WIDTH, EQUAL, dim.dimx) | size(HEIGHT, EQUAL, dim.dimy);
+        };
 
-    return center(std::move(mainBox)) | bgcolor(convert::toFTX(titlePage.page_color));
-}
+        auto bgColor = blendWithBackground(convert::toFTX(page_.box_color));
+        auto fgColor = blendWithBackground(ftxui::Color::Palette16::White);
+
+        auto mainBox = flex(text(std::string{page_.title}) | bold | center)
+                     | boxSize(page_.box_size) | bgcolor(bgColor) | border | color(fgColor);
+
+        return center(std::move(mainBox)) | bgcolor(convert::toFTX(page_.page_color));
+    }
+
+    bool OnEvent(ftxui::Event event) override {
+        if (event == ftxui::Event::Return) {
+            animator = ftxui::animation::Animator{&fadeValue, 0.F, std::chrono::seconds{1}};
+            return true;
+        }
+        return false;
+    }
+
+    void OnAnimation(ftxui::animation::Params& params) override {
+        animator.OnAnimation(params);
+
+        if (hasFadedToBlack()) { goToNext(); }
+    }
+
+private:
+    ftxui::Color blendWithBackground(ftxui::Color targetColor) const {
+        return ftxui::Color::Interpolate(fadeValue, convert::toFTX(page_.page_color), targetColor);
+    }
+    bool hasFadedToBlack() { return animator.to() == 0.F && fadeValue == 0.F; }
+    void goToNext() { eventHandler_(page_.next_event); }
+
+    std::function<void(engine::Event)> eventHandler_;
+    TitlePage const&                   page_;
+    float                              fadeValue{0.F};
+    ftxui::animation::Animator         animator{&fadeValue, 1.F, std::chrono::seconds{2}};
+};
 
 ftxui::Component pageFrom(TitlePage const&                           titlePage,
                           std::function<void(danteo::engine::Event)> eventHandler) {
-    auto onEnterPressed =
-        [&, eventHandler_ = std::move(eventHandler)](ftxui::Event event) { // NOLINT API forces copy
-            if (event == ftxui::Event::Return) {
-                eventHandler_(titlePage.next_event);
-                return true;
-            }
-            return false;
-        };
-
-    auto presentPage = [&titlePage] { return danteo::present(titlePage); };
-
-    return ftxui::Renderer(std::move(presentPage)) | ftxui::CatchEvent(std::move(onEnterPressed));
+    return std::make_shared<TitlePagePresenter>(titlePage, std::move(eventHandler));
 }
 } // namespace danteo
