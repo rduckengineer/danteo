@@ -1,6 +1,7 @@
 #include "gameplay/pages/dialogue_page_presenter.hpp"
 
 #include "user_interface/color_ftxui.hpp"
+#include "user_interface/scroller.hpp"
 
 #include "warnings_ignore_push.hpp"
 #include "range/v3/view/transform.hpp"
@@ -23,18 +24,19 @@ std::function<ftxui::Element()> staticPageFrom(DialoguePage const& page) {
         using ranges::to_vector;
 
         return ftxui::vbox(page.lines | ::ranges::views::transform(printLine) | ::ranges::to_vector)
+//             | ftxui::size(ftxui::HEIGHT, ftxui::LESS_THAN, page.maxHeight)
              | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth) | ftxui::center;
     };
 }
 
 ftxui::Component pageFrom(DialoguePageOnly const&            page,
                           std::function<void(engine::Event)> eventHandler) {
-    return ftxui::Renderer([&] {
+    return ftxui::Scroller(ftxui::Renderer([&] {
                return ftxui::vbox({staticPageFrom(page)(),
                                    ftxui::text("> Next") | ftxui::bold | ftxui::inverted
                                        | ftxui::align_right})
                     | ftxui::size(ftxui::WIDTH, ftxui::LESS_THAN, page.maxWidth) | ftxui::center;
-           })
+           }))
          | ftxui::CatchEvent([&, eventHandler_ = std::move(eventHandler)](
                                  ftxui::Event event) { // NOLINT API forces the copy
                if (event == ftxui::Event::Return) {

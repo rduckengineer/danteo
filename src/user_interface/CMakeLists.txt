@@ -10,12 +10,13 @@ target_link_libraries(
 )
 
 # Terminal-related display logic
-add_library(user_interface_impl INTERFACE
+add_library(user_interface_impl STATIC
+        scroller.cpp
         )
 
 target_link_libraries(
         user_interface_impl
-        INTERFACE
+        PUBLIC
         user_interface
         user_interface_core_impl
         engine_interface

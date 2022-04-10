@@ -57,13 +57,15 @@ struct DialogueLine {
 };
 
 struct DialoguePage {
-    static constexpr int defaultMaxWidth = 60;
+    static constexpr int defaultMaxWidth  = 60;
+    static constexpr int defaultMaxHeight = 30;
 
     DialoguePage()               = default;
     DialoguePage(DialoguePage&&) = default;
 
     std::vector<DialogueLine> lines;
-    int                       maxWidth = defaultMaxWidth;
+    int                       maxWidth  = defaultMaxWidth;
+    int                       maxHeight = defaultMaxHeight;
 };
 
 struct DialoguePageOnly : DialoguePage {
