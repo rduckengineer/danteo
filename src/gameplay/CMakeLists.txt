@@ -20,6 +20,9 @@ add_library(gameplay_impl STATIC
         scenes/office_space_scene.hpp
         scenes/office_space_scene_graph.cpp
         scenes/office_space_scene_pages.cpp
+
+        scenes/reboot_scene.hpp
+        scenes/reboot_scene.cpp
         )
 
 target_link_libraries(gameplay_impl

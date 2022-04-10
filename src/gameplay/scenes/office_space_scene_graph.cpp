@@ -12,7 +12,7 @@ void OfficeScene::addScene(engine::StateGraph::Builder& builder) const {
     builder / SceneStates::meetTheTeam + SceneEvents::globals  = SceneStates::aGlobal;
     builder / SceneStates::ooookay + SceneEvents::fmtPrint     = SceneStates::fmtPrint;
     builder / SceneStates::ooookay + SceneEvents::globals      = SceneStates::aGlobal;
-    builder / SceneStates::fmtPrint + Events::next             = pairWithDusty;
-    builder / SceneStates::aGlobal + Events::next              = pairWithFuncBro;
+    builder / SceneStates::fmtPrint + Events::next             = nextScene;
+    builder / SceneStates::aGlobal + Events::next              = nextScene;
 }
 } // namespace danteo::scenes

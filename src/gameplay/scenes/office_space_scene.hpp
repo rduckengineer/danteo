@@ -8,8 +8,7 @@
 
 namespace danteo::scenes {
 struct OfficeScene {
-    engine::State pairWithFuncBro;
-    engine::State pairWithDusty;
+    engine::State nextScene;
 
     struct SceneStates {
         static constexpr engine::State officeScene{"TheOffice"};
