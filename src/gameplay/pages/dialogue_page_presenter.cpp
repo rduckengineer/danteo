@@ -18,30 +18,39 @@ ftxui::MenuOption verticalMenuAlignedRight(int&                               se
                                            gsl::span<engine::Event const>     events);
 } // namespace
 
-std::function<ftxui::Element()> staticPageFrom(DialoguePage const& page) {
-    return [&page]() -> ftxui::Element {
+std::function<ftxui::Element()> staticPageFrom(DialoguePage const& page, float focusY) {
+    return [&page, focusY]() -> ftxui::Element {
         using ranges::views::transform;
         using ranges::to_vector;
 
         return ftxui::vbox(page.lines | ::ranges::views::transform(printLine) | ::ranges::to_vector)
-//             | ftxui::size(ftxui::HEIGHT, ftxui::LESS_THAN, page.maxHeight)
-             | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth) | ftxui::center;
+             | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth)
+             | ftxui::focusPositionRelative(0.f, focusY) | ftxui::frame
+             | ftxui::size(ftxui::HEIGHT, ftxui::LESS_THAN, page.maxHeight) | ftxui::center;
     };
 }
 
 ftxui::Component pageFrom(DialoguePageOnly const&            page,
                           std::function<void(engine::Event)> eventHandler) {
-    return ftxui::Scroller(ftxui::Renderer([&] {
-               return ftxui::vbox({staticPageFrom(page)(),
+    float focusY = 0.f;
+    return ftxui::Renderer([&] {
+               return ftxui::vbox({staticPageFrom(page, focusY)(),
                                    ftxui::text("> Next") | ftxui::bold | ftxui::inverted
                                        | ftxui::align_right})
                     | ftxui::size(ftxui::WIDTH, ftxui::LESS_THAN, page.maxWidth) | ftxui::center;
-           }))
+           })
          | ftxui::CatchEvent([&, eventHandler_ = std::move(eventHandler)](
                                  ftxui::Event event) { // NOLINT API forces the copy
                if (event == ftxui::Event::Return) {
                    eventHandler_(page.nextEvent);
                    return true;
+               } else if (event == ftxui::Event::ArrowDown
+                          || (event.is_mouse()
+                              && event.mouse().button == ftxui::Mouse::WheelDown)) {
+                   focusY = std::min(1.f, focusY + 0.1f);
+               } else if (event == ftxui::Event::ArrowUp
+                          || (event.is_mouse() && event.mouse().button == ftxui::Mouse::WheelUp)) {
+                   focusY = std::max(0.f, focusY - 0.1f);
                }
                return false;
            });
@@ -58,7 +67,7 @@ ftxui::Component pageFrom(DialoguePageWithChoice const&      page,
         auto menu = ftxui::Menu(&page.choices, &selection, option);
 
         return ftxui::Renderer(menu, [&] {
-            return ftxui::vbox({staticPageFrom(page)(), menu->Render()})
+            return ftxui::vbox({staticPageFrom(page, 0.f)(), menu->Render()})
                  | ftxui::size(ftxui::WIDTH, ftxui::LESS_THAN, page.maxWidth) | ftxui::center;
         });
     }();
