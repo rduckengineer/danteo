@@ -24,10 +24,14 @@ void addScenesToGraph(DanteoStateToPageMap::Builder& builder, SceneT const&... s
 }
 
 engine::PageNavigation<DanteoPageRequest> gameNavigation() {
+    static constexpr engine::State gameStart = States::titleScreen;
+    // static constexpr engine::State gameStart = scenes::OfficeScene::startState;
+
     scenes::WelcomeScene const  welcomeScene{.nextScene = scenes::CorridorScene::startState};
     scenes::CorridorScene const corridorScene{{.nextScene = scenes::OfficeScene::startState,
                                                .restart   = scenes::WelcomeScene::startState}};
-    scenes::OfficeScene const   officeScene{.nextScene = States::exit};
+    scenes::OfficeScene const   officeScene{
+          .pairWithFuncBro = States::exit, .pairWithDusty = States::exit};
 
     engine::StateGraph::Builder graphBuilder{};
     graphBuilder / States::titleScreen + Events::next = scenes::WelcomeScene::startState;
@@ -42,8 +46,7 @@ engine::PageNavigation<DanteoPageRequest> gameNavigation() {
                                .next_event = Events::next};
     addScenesToGraph(pagesPerState, welcomeScene, corridorScene, officeScene);
 
-    return engine::PageNavigation{
-        engine::StateMachine{std::move(graphBuilder).build(), States::titleScreen},
-        std::move(pagesPerState).build()};
+    return engine::PageNavigation{engine::StateMachine{std::move(graphBuilder).build(), gameStart},
+                                  std::move(pagesPerState).build()};
 }
 } // namespace danteo
