@@ -45,8 +45,7 @@ private:
 
     GameScreen<ftxui::ScreenInteractive>& gameScreen_;
     DanteoPageComponentFactory pageFactory{[&](engine::Event event) { nextEventToApply = event; }};
-    engine::PageNavigation<DanteoPageRequest> navigation{
-        engine::StateMachine{gameStateGraph(), States::titleScreen}, pagePerState()};
+    engine::PageNavigation<DanteoPageRequest> navigation = gameNavigation();
 };
 } // namespace danteo
 

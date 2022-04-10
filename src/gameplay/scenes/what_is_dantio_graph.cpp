@@ -2,30 +2,29 @@
 
 #include "engine/state_graph_builder.hpp"
 
-namespace danteo {
-// cppcheck-suppress[constParameter]
-// NOLINTNEXTLINE
-void scenes::addSecondScene(engine::StateGraph::Builder& builder, SecondSceneExits const& exits) {
+namespace danteo::scenes {
 
-    builder / CorridorStates::corridorScene + Events::next = CorridorStates::discussion;
-    builder / CorridorStates::discussion + Events::next    = CorridorStates::buzzwords;
-    builder / CorridorStates::buzzwords + Events::next     = CorridorStates::theClouds;
+// cppcheck-suppress[constParameter] No, it can't be const, it's being mutated here
+void CorridorScene::addScene(engine::StateGraph::Builder& builder) const {
+    builder / SceneStates::corridorScene + Events::next = SceneStates::discussion;
+    builder / SceneStates::discussion + Events::next    = SceneStates::buzzwords;
+    builder / SceneStates::buzzwords + Events::next     = SceneStates::theClouds;
 
-    builder / CorridorStates::theClouds + CorridorEvents::HELL   = CorridorStates::hell;
-    builder / CorridorStates::theClouds + CorridorEvents::HEAVEN = CorridorStates::heaven;
-    builder / CorridorStates::theClouds + CorridorEvents::CLOUDS = CorridorStates::theCloudsBis;
+    builder / SceneStates::theClouds + SceneEvents::HELL   = SceneStates::hell;
+    builder / SceneStates::theClouds + SceneEvents::HEAVEN = SceneStates::heaven;
+    builder / SceneStates::theClouds + SceneEvents::CLOUDS = SceneStates::theCloudsBis;
 
-    builder / CorridorStates::hell + Events::next         = CorridorStates::programmerPain;
-    builder / CorridorStates::heaven + Events::next       = CorridorStates::programmerPain;
-    builder / CorridorStates::theCloudsBis + Events::next = CorridorStates::programmerPain;
+    builder / SceneStates::hell + Events::next         = SceneStates::programmerPain;
+    builder / SceneStates::heaven + Events::next       = SceneStates::programmerPain;
+    builder / SceneStates::theCloudsBis + Events::next = SceneStates::programmerPain;
 
-    builder / CorridorStates::programmerPain + CorridorEvents::genius = CorridorStates::letsGoYay;
-    builder / CorridorStates::programmerPain + CorridorEvents::evil   = CorridorStates::letsGoNay;
-    builder / CorridorStates::programmerPain + Events::fakeRespawn    = CorridorStates::imOut;
+    builder / SceneStates::programmerPain + SceneEvents::genius = SceneStates::letsGoYay;
+    builder / SceneStates::programmerPain + SceneEvents::evil   = SceneStates::letsGoNay;
+    builder / SceneStates::programmerPain + Events::fakeRespawn = SceneStates::imOut;
 
-    builder / CorridorStates::letsGoYay + Events::next = exits.nextScene;
-    builder / CorridorStates::letsGoNay + Events::next = exits.nextScene;
+    builder / SceneStates::letsGoYay + Events::next = nextScene_;
+    builder / SceneStates::letsGoNay + Events::next = nextScene_;
 
-    builder / CorridorStates::imOut + Events::next = exits.restart;
+    builder / SceneStates::imOut + Events::next = restart_;
 }
-} // namespace danteo
+} // namespace danteo::scenes

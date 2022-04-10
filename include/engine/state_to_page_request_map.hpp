@@ -20,6 +20,8 @@ public:
         return std::ref(pageIt->second);
     }
 
+    class Builder;
+
 private:
     std::map<State, RequestT> requestPerState_;
 };

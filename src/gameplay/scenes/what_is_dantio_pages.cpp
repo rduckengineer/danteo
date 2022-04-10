@@ -3,7 +3,7 @@
 #include "gameplay/pages/dialogue_page_builder.hpp"
 #include "gameplay/characters.hpp"
 
-#include <array>
+#include "engine/state_to_page_request_map_builder.hpp"
 
 namespace danteo::scenes {
 using namespace danteo::characters;
@@ -16,43 +16,29 @@ DialoguePageOnly       buildHeavenHellOrTheClouds(std::string_view chosenRespons
 DialoguePageWithChoice makeProgrammerPain();
 DialoguePageOnly       buildThatsEvilOrGenius(std::string_view chosenResponse);
 DialoguePageOnly       makeImOutOfHere();
-
-struct MapInserter {
-    std::map<engine::State, DanteoPageRequest>& mapToUpdate;
-    engine::State                               state;
-};
-
-MapInserter operator<<(std::map<engine::State, DanteoPageRequest>& lhs, engine::State rhs) {
-    return {lhs, rhs};
-}
-
-template <typename PageT>
-    requires(
-        std::is_constructible_v<DanteoPageRequest, PageT> && !std::is_lvalue_reference_v<PageT>)
-void operator<<(MapInserter&& lhs, PageT&& rhs) {
-    lhs.mapToUpdate.try_emplace(lhs.state, std::move(rhs)); // NOLINT intended move
-}
 } // namespace
 
-void addSecondScene(std::map<engine::State, DanteoPageRequest>& pagesPerState) {
-    pagesPerState << CorridorStates::corridorScene << SceneChangePage{"Corridor", Events::next};
-    pagesPerState << CorridorStates::discussion << makeDiscussion();
-    pagesPerState << CorridorStates::buzzwords << makeBuzzwords();
-    pagesPerState << CorridorStates::theClouds << makeTheClouds();
-    pagesPerState << CorridorStates::heaven
-                  << buildHeavenHellOrTheClouds("Like the actual heaven?!");
-    pagesPerState << CorridorStates::hell << buildHeavenHellOrTheClouds("Are we really in hell?!");
-    pagesPerState << CorridorStates::theCloudsBis
+void CorridorScene::addScene(DanteoStateToPageMap::Builder& pagesPerState) {
+    pagesPerState << SceneStates::corridorScene << SceneChangePage{"Corridor", Events::next};
+    pagesPerState << SceneStates::corridorScene << SceneChangePage{"Corridor", Events::next};
+    pagesPerState << SceneStates::discussion << makeDiscussion();
+    pagesPerState << SceneStates::buzzwords << makeBuzzwords();
+    pagesPerState << SceneStates::theClouds << makeTheClouds();
+    pagesPerState << SceneStates::heaven << buildHeavenHellOrTheClouds("Like the actual heaven?!");
+    pagesPerState << SceneStates::hell << buildHeavenHellOrTheClouds("Are we really in hell?!");
+    pagesPerState << SceneStates::theCloudsBis
                   << buildHeavenHellOrTheClouds("Did you mean the literal clouds?!");
-    pagesPerState << CorridorStates::programmerPain << makeProgrammerPain();
-    pagesPerState << CorridorStates::letsGoYay
+    pagesPerState << SceneStates::programmerPain << makeProgrammerPain();
+    pagesPerState << SceneStates::letsGoYay
                   << buildThatsEvilOrGenius("That's genius! Where do I sign?");
-    pagesPerState << CorridorStates::letsGoNay
+    pagesPerState << SceneStates::letsGoNay
                   << buildThatsEvilOrGenius("That's evil! I didn't sign up for this!");
-    pagesPerState << CorridorStates::imOut << makeImOutOfHere();
+    pagesPerState << SceneStates::imOut << makeImOutOfHere();
 }
 
 namespace {
+using SceneEvents = CorridorScene::SceneEvents;
+
 DialoguePageWithChoice makeDiscussion() {
     return {
         {// clang-format off
@@ -128,8 +114,7 @@ DialoguePageWithChoice makeTheClouds() {
                    "their Clouds to 3rd parties, so the lower-downs seized the opportunity to "
                    "modernize and started DantIO")},
         std::vector<std::string>{"HEAVEN?!", "HELL?!", "THE CLOUDS?!"},
-        std::vector<engine::Event>{
-            CorridorEvents::HEAVEN, CorridorEvents::HELL, CorridorEvents::CLOUDS}};
+        std::vector<engine::Event>{SceneEvents::HEAVEN, SceneEvents::HELL, SceneEvents::CLOUDS}};
 }
 
 DialoguePageOnly buildHeavenHellOrTheClouds(std::string_view chosenResponse) {
@@ -181,8 +166,7 @@ DialoguePageWithChoice makeProgrammerPain() {
              .says("Our mission is to make software rot and to ensure that juniors "
                    "stay far away from good practices.")},
         std::vector<std::string>{"That's evil!", "That's genius!", "I'm out of here!"},
-        std::vector<engine::Event>{
-            CorridorEvents::evil, CorridorEvents::genius, Events::fakeRespawn}};
+        std::vector<engine::Event>{SceneEvents::evil, SceneEvents::genius, Events::fakeRespawn}};
 }
 
 DialoguePageOnly buildThatsEvilOrGenius(std::string_view chosen) {

@@ -6,6 +6,8 @@
 
 #include "gameplay/danteo_page_request.hpp"
 
+#include "engine/page_navigation.hpp"
+
 namespace danteo {
 
 struct States {
@@ -18,9 +20,7 @@ struct Events {
     static constexpr engine::Event fakeRespawn{"fakeRespawn"};
 };
 
-engine::StateGraph gameStateGraph();
-
-engine::StateToPageRequestMap<DanteoPageRequest> pagePerState();
+engine::PageNavigation<DanteoPageRequest> gameNavigation();
 } // namespace danteo
 
 #endif // DANTEO_DANTEO_STATE_GRAPH_HPP
