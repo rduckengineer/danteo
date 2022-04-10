@@ -18,12 +18,20 @@ ftxui::MenuOption verticalMenuAlignedRight(int&                               se
 } // namespace
 
 std::function<ftxui::Element()> staticPageFrom(DialoguePage const& page) {
-    return [&page] {
+    return [&page]() -> ftxui::Element {
         using ranges::views::transform;
         using ranges::to_vector;
 
-        return ftxui::vbox(page.lines | transform(printLine) | to_vector)
-             | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth) | ftxui::center;
+        auto testRng = page.lines | ::ranges::views::transform(printLine) | ranges::to_vector;
+
+        testRng.begin();
+
+        // static_assert(ranges::_range__requires_<decltype(testRng)>);
+
+        /*return ftxui::vbox(page.lines | ::ranges::views::transform(printLine) |
+           ::ranges::to_vector) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, page.maxWidth) |
+           ftxui::center;*/
+        return {};
     };
 }
 

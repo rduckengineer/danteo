@@ -10,10 +10,14 @@ add_library(gameplay_impl STATIC
         pages/dialogue_page_presenter.cpp
         pages/scene_change_page_presenter.cpp
 
+        scenes/scene.hpp
+
         scenes/ceo_scene.hpp
         scenes/what_is_dantio.hpp
         scenes/what_is_dantio_graph.cpp
         scenes/what_is_dantio_pages.cpp
+
+        scenes/office_space_scene.hpp
         )
 
 target_link_libraries(gameplay_impl

@@ -8,6 +8,8 @@ add_library(engine_interface INTERFACE
         state_graph_builder.hpp
         state_machine.hpp
         page_navigation.hpp
+        state_to_page_request_map.hpp
+        state_to_page_request_map_builder.hpp
         )
 
 target_include_directories(engine_interface INTERFACE ${DANTEO_INCLUDE_PATH})
