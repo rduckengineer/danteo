@@ -18,6 +18,8 @@ add_library(gameplay_impl STATIC
         scenes/what_is_dantio_pages.cpp
 
         scenes/office_space_scene.hpp
+        scenes/office_space_scene_graph.cpp
+        scenes/office_space_scene_pages.cpp
         )
 
 target_link_libraries(gameplay_impl

@@ -6,8 +6,6 @@
 
 #include "gameplay/danteo_state_graph.hpp"
 
-#include "scene.hpp"
-
 namespace danteo::scenes {
 
 class CorridorScene {

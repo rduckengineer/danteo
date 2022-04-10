@@ -7,6 +7,9 @@
 
 #include "scenes/ceo_scene.hpp"
 #include "scenes/what_is_dantio.hpp"
+#include "scenes/office_space_scene.hpp"
+
+#include "scenes/scene.hpp"
 
 namespace danteo {
 
@@ -22,12 +25,13 @@ void addScenesToGraph(DanteoStateToPageMap::Builder& builder, SceneT const&... s
 
 engine::PageNavigation<DanteoPageRequest> gameNavigation() {
     scenes::WelcomeScene const  welcomeScene{.nextScene = scenes::CorridorScene::startState};
-    scenes::CorridorScene const corridorScene{
-        {.nextScene = States::exit, .restart = scenes::WelcomeScene::startState}};
+    scenes::CorridorScene const corridorScene{{.nextScene = scenes::OfficeScene::startState,
+                                               .restart   = scenes::WelcomeScene::startState}};
+    scenes::OfficeScene const   officeScene{.nextScene = States::exit};
 
     engine::StateGraph::Builder graphBuilder{};
     graphBuilder / States::titleScreen + Events::next = scenes::WelcomeScene::startState;
-    addScenesToGraph(graphBuilder, welcomeScene, corridorScene);
+    addScenesToGraph(graphBuilder, welcomeScene, corridorScene, officeScene);
 
     DanteoStateToPageMap::Builder pagesPerState{};
     pagesPerState << States::titleScreen
@@ -36,7 +40,7 @@ engine::PageNavigation<DanteoPageRequest> gameNavigation() {
                                .box_color  = HSV{0, 255, 30},           // NOLINT
                                .page_color = HSV{0, 0, 10},             // NOLINT
                                .next_event = Events::next};
-    addScenesToGraph(pagesPerState, welcomeScene, corridorScene);
+    addScenesToGraph(pagesPerState, welcomeScene, corridorScene, officeScene);
 
     return engine::PageNavigation{
         engine::StateMachine{std::move(graphBuilder).build(), States::titleScreen},
