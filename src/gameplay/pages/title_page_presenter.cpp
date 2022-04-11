@@ -1,8 +1,6 @@
 #include "gameplay/pages/title_page_presenter.hpp"
 
-#include "user_interface/color_ftxui.hpp"
-
-#include "ftxui/component/animation.hpp"
+#include "gameplay/pages/fade_presenter_base.hpp"
 
 namespace danteo {
 namespace {
@@ -11,11 +9,10 @@ ftxui::Dimensions toFTX(Size2D const& box) {
 }
 }; // namespace
 
-class TitlePagePresenter : public ftxui::ComponentBase {
+class TitlePagePresenter : public FadePresenterBase<TitlePage> {
 public:
     TitlePagePresenter(TitlePage const& page, std::function<void(engine::Event)> eventHandler)
-        : eventHandler_{std::move(eventHandler)}
-        , page_{page} {}
+        : FadePresenterBase<TitlePage>(page, std::move(eventHandler)) {}
 
     ftxui::Element Render() override {
         using namespace ftxui;
@@ -33,32 +30,6 @@ public:
 
         return center(std::move(mainBox)) | bgcolor(convert::toFTX(page_.page_color));
     }
-
-    bool OnEvent(ftxui::Event event) override {
-        if (event == ftxui::Event::Return) {
-            animator = ftxui::animation::Animator{&fadeValue, 0.F, std::chrono::seconds{1}};
-            return true;
-        }
-        return false;
-    }
-
-    void OnAnimation(ftxui::animation::Params& params) override {
-        animator.OnAnimation(params);
-
-        if (hasFadedToBlack()) { goToNext(); }
-    }
-
-private:
-    ftxui::Color blendWithBackground(ftxui::Color targetColor) const {
-        return ftxui::Color::Interpolate(fadeValue, convert::toFTX(page_.page_color), targetColor);
-    }
-    bool hasFadedToBlack() { return animator.to() == 0.F && fadeValue == 0.F; }
-    void goToNext() { eventHandler_(page_.next_event); }
-
-    std::function<void(engine::Event)> eventHandler_;
-    TitlePage const&                   page_;
-    float                              fadeValue{0.F};
-    ftxui::animation::Animator         animator{&fadeValue, 1.F, std::chrono::seconds{2}};
 };
 
 ftxui::Component pageFrom(TitlePage const&                           titlePage,

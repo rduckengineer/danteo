@@ -7,6 +7,7 @@ add_library(gameplay_interfaces INTERFACE
         danteo_page_component_factory.hpp
         danteo_update_loop.hpp
 
+        pages/fade_presenter_base.hpp
         pages/title_page.hpp
         pages/title_page_presenter.hpp
         pages/scene_change_page.hpp
