@@ -19,6 +19,7 @@ void RebootScene::addScene(engine::StateGraph::Builder& builder) const {
     builder / SceneStates::noTime + Events::next        = nextScene;
 }
 
+// NOLINTNEXTLINE not static to keep it possible to use state
 void RebootScene::addScene(DanteoStateToPageMap::Builder& builder) const {
     using namespace characters;
 
