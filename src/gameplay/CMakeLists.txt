@@ -7,7 +7,9 @@ add_library(gameplay_impl STATIC
         danteo_page_presenter.cpp
 
         pages/title_page_presenter.cpp
-        pages/dialogue_page_presenter.cpp
+        pages/dialogue_page_component_base.hpp
+        pages/dialogue_page_with_choice_presenter.cpp
+        pages/dialogue_page_only_presenter.cpp
         pages/scene_change_page_presenter.cpp
 
         scenes/scene.hpp
