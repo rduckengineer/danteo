@@ -53,7 +53,7 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 # Set the project name and language
 project(
         danteo
-        VERSION 1.0.0
+        VERSION 1.0.1
         DESCRIPTION "DantIO. Together for a buggier tomorrow."
         HOMEPAGE_URL "https://github.com/rduckengineer/danteo"
         LANGUAGES CXX C)
